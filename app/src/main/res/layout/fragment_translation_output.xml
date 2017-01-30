@@ -7,12 +7,43 @@
 
     <me.grantland.widget.AutofitTextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/output_text"
         android:gravity="center"
+        android:layout_gravity="center"
         android:maxLines="3"
         android:textSize="40sp"
         autofit:minTextSize="16sp"/>
 
+    <LinearLayout
+        android:id="@+id/output_options"
+        android:minHeight="48dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/output_star"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/output_copy"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/output_share"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </FrameLayout>

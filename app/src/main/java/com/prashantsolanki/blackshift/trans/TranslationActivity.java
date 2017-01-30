@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,12 +42,22 @@ public class TranslationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_translation);
         ButterKnife.bind(this);
+        viewPagerAdapter = new TranslationsViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+
+        //TODO: Check API
+        if(getIntent().getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)!=null) {
+            inputEditText.setText(getIntent()
+                    .getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT));
+            viewPagerAdapter.setInputText(inputEditText.getText().toString());
+            setResult();
+        }
 
         x = getIntent().getIntExtra("x",-1);
         y = getIntent().getIntExtra("y",-1);
 
         /*
-         *This listens to layout changes and report when bgReveal has been inflated.
+         * This listens to layout changes and report when bgReveal has been inflated.
          * */
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bgReveal.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -57,9 +69,6 @@ public class TranslationActivity extends AppCompatActivity {
                 }
             });
         }
-
-        viewPagerAdapter = new TranslationsViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(viewPagerAdapter);
 
         final int color1 = ContextCompat.getColor(this, android.R.color.holo_blue_bright);
         final int color2 = ContextCompat.getColor(this, android.R.color.holo_green_light);
@@ -87,6 +96,7 @@ public class TranslationActivity extends AppCompatActivity {
                         bgReveal.setBackgroundColor(color3);
                         break;
                 }
+                setResult();
             }
 
             @Override
@@ -114,6 +124,13 @@ public class TranslationActivity extends AppCompatActivity {
 
     }
 
+    void setResult(){
+        Intent intent = new Intent();
+        intent.putExtra(Intent.EXTRA_PROCESS_TEXT, ((TranslationOutputFragment)viewPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem())).getOutputText());
+        setResult(RESULT_OK,intent);
+        Toast.makeText(getApplication(), ((TranslationOutputFragment)viewPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem())).getOutputText(),
+                Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onBackPressed() {

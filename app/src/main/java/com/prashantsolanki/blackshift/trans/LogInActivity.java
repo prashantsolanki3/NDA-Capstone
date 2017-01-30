@@ -9,6 +9,7 @@ import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -27,6 +28,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.MaterialIcons;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class LogInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -45,16 +51,22 @@ public class LogInActivity extends AppCompatActivity implements
 
     private GoogleApiClient mGoogleApiClient;
 
+    @BindView(R.id.logo)
+    ImageView logo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        ButterKnife.bind(this);
 
 
         // Button listeners
         findViewById(R.id.google_login).setOnClickListener(this);
-        findViewById(R.id.logo).setOnClickListener(this);
+
         ((SignInButton) findViewById(R.id.google_login)).setSize(SignInButton.SIZE_WIDE);
+        logo.setBackgroundColor(android.R.color.holo_blue_bright);
+        logo.setImageDrawable(new IconDrawable(this, MaterialIcons.md_swap_horiz).colorRes(android.R.color.black).sizeDp(96));
 
         // [START config_signin]
         // Configure Google Sign In
@@ -168,6 +180,7 @@ public class LogInActivity extends AppCompatActivity implements
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        showProgressDialog();
     }
     // [END signin]
 
@@ -237,8 +250,7 @@ public class LogInActivity extends AppCompatActivity implements
         int i = v.getId();
         if (i == R.id.google_login) {
             signIn();
-        } else if (i == R.id.logo)
-            startMainActivity();
+        }
     }
 
 

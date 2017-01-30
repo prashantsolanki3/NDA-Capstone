@@ -1,15 +1,21 @@
 package com.prashantsolanki.blackshift.trans;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.MaterialIcons;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.grantland.widget.AutofitTextView;
 
 
@@ -24,8 +30,10 @@ public class TranslationOutputFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_INPUT = "input";
+    private static final String ARG_SPEECH = "speech";
 
     private String inputString;
+    private String speech;
 
     //private OnFragmentInteractionListener mListener;
 
@@ -45,6 +53,7 @@ public class TranslationOutputFragment extends Fragment {
         TranslationOutputFragment fragment = new TranslationOutputFragment();
         Bundle args = new Bundle();
         args.putString(ARG_INPUT, input);
+        args.putString(ARG_SPEECH, speech);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,6 +63,7 @@ public class TranslationOutputFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             inputString = getArguments().getString(ARG_INPUT);
+            speech = getArguments().getString(ARG_SPEECH);
         }
     }
 
@@ -62,18 +72,66 @@ public class TranslationOutputFragment extends Fragment {
     @BindView(R.id.output_text)
     AutofitTextView outputTextView;
 
+    @BindView(R.id.output_star)
+    ImageView star;
+    @BindView(R.id.output_copy)
+    ImageView copy;
+    @BindView(R.id.output_share)
+    ImageView share;
+
+    @BindView(R.id.output_options)
+    View outputOptions;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_translation_output, container, false);
         ButterKnife.bind(this,rootView);
 
-        outputTextView.setText(inputString);
+        star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border)
+                .colorRes(android.R.color.black)
+                .actionBarSize());
 
+        copy.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_content_copy)
+                .colorRes(android.R.color.black)
+                .actionBarSize());
+
+        share.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_share)
+                .colorRes(android.R.color.black)
+                .actionBarSize());
+
+        outputTextView.setText(speech+" - "+inputString);
+
+        if (outputTextView.getText().toString().trim().isEmpty()||outputTextView.getText().toString().trim().length()==0){
+            outputOptions.setVisibility(View.GONE);
+        }else{
+            outputOptions.setVisibility(View.VISIBLE);
+        }
         return rootView;
     }
 
-  /*  // TODO: Rename method, update argument and hook method into UI event
+    @OnClick(R.id.output_text)
+    void copyOnClick(View v){
+        String output = ((TextView)v).getText().toString().trim();
+        if(!output.isEmpty()&&output.length()!=0){
+            if(android.os.Build.VERSION.SDK_INT < 11) {
+                android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboard.setText(output);
+            } else {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", output);
+                clipboard.setPrimaryClip(clip);
+            }
+            Toast.makeText(getContext(),"Copied to clipboard.",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public String getOutputText(){
+        return outputTextView.getText().toString();
+    }
+
+    /*
+    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

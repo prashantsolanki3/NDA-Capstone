@@ -37,6 +37,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'me.grantland:autofittextview:0.2.+'
+    compile 'com.joanzapata.iconify:android-iconify-material:2.2.2'
 }
 
 

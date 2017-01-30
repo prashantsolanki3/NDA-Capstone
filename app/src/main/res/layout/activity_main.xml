@@ -9,19 +9,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:visibility="invisible"
     tools:context="com.prashantsolanki.blackshift.trans.MainActivity">
 
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:srcCompat="@android:drawable/btn_star_big_on"
-        android:scaleType="fitXY"
-        android:id="@+id/translate"
+    <android.support.design.widget.FloatingActionButton
         android:transitionName="logo"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="171dp" />
+        android:layout_marginBottom="171dp"
+        app:fabSize="normal"
+        app:backgroundTint="@android:color/holo_blue_bright"
+        android:id="@+id/translate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:transitionName="quotes"
+        app:fabSize="normal"
+        app:backgroundTint="@android:color/holo_blue_bright"
+        android:id="@+id/quotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/starred"
+        android:layout_toLeftOf="@+id/translate"
+        android:layout_toStartOf="@+id/translate" />
 
     <TextView
         android:transitionName="greetings"
@@ -31,9 +41,21 @@
         android:layout_height="wrap_content"
         android:textSize="64sp"
         android:gravity="center"
-        android:layout_above="@+id/translate"
-        android:layout_marginBottom="81dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="88dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:transitionName="starred"
+        app:fabSize="normal"
+        app:backgroundTint="@android:color/holo_blue_bright"
+        android:id="@+id/starred"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="83dp"
+        android:layout_alignTop="@+id/translate"
+        android:layout_toRightOf="@+id/translate"
+        android:layout_toEndOf="@+id/translate" />
 
 </RelativeLayout>

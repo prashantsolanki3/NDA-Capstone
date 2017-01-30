@@ -2,33 +2,36 @@ package com.prashantsolanki.blackshift.trans;
 
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.transition.Transition;
+import android.support.design.widget.FloatingActionButton;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.MaterialIcons;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener {
+import butterknife.BindView;
+
+public class MainActivity extends BaseActivity implements View.OnTouchListener, View.OnClickListener {
 
     int animX =-1,animY = -1;
+
+    @BindView(R.id.translate)
+    FloatingActionButton translate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        verifyAuth();
-        setContentView(R.layout.activity_main);
+
 
         // Check if we're running on Android 5.0 or higher
         findViewById(R.id.translate).setOnClickListener(this);
         findViewById(R.id.translate).setOnTouchListener(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        translate.setBackgroundColor(android.R.color.holo_blue_bright);
+        translate.setImageDrawable(new IconDrawable(this, MaterialIcons.md_swap_horiz).colorRes(android.R.color.black).sizeDp(96));
+
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Call some material design APIs here
             Transition sharedElementEnterTransition = getWindow().getSharedElementEnterTransition();
             sharedElementEnterTransition.addListener(new Transition.TransitionListener() {
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
                 @Override
                 public void onTransitionEnd(Transition transition) {
-                    Toast.makeText(getApplicationContext(),"END",Toast.LENGTH_SHORT).show();
+
                 }
 
                 @Override
@@ -59,8 +62,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             });
         } else {
             // Implement this feature without material design
-        }
+        }*/
 
+    }
+
+    @Override
+    public int getLayoutRes() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public int getLayoutBaseViewIdRes() {
+        return R.id.activity_main;
     }
 
     @Override
@@ -83,59 +96,4 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         return false;
     }
 
-
-    /*User login check*/
-
-    // [START declare_auth]
-    private FirebaseAuth mAuth;
-    // [END declare_auth]
-
-    // [START declare_auth_listener]
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    // [END declare_auth_listener]
-
-    // [START on_start_add_listener]
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-    // [END on_start_add_listener]
-
-    // [START on_stop_remove_listener]
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
-
-    void verifyAuth(){
-        // [START initialize_auth]
-        mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
-
-        // [START auth_state_listener]
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    findViewById(R.id.activity_main).setVisibility(View.VISIBLE);
-                } else {
-                    // User is signed out
-                    Toast.makeText(getApplicationContext(),
-                            "You are not logged in. Please log in.",
-                            Toast.LENGTH_SHORT).show();
-                    findViewById(R.id.activity_main).setVisibility(View.INVISIBLE);
-                    startActivityForResult(new Intent(getApplicationContext(), LogInActivity.class),439);
-                }
-            }
-        };
-        // [END auth_state_listener]
-    }
-    // [END on_stop_remove_listener]
 }
