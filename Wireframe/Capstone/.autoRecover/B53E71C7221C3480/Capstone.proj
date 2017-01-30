@@ -1,0 +1,11 @@
+﻿<?Infragistics.Models format="xaml" version="4" appVersion="8.1.3000.87"?>
+<Project xmlns="http://prototypes.infragistics.com/"
+                                                                                     Id="PPKYEAXK44DE" StartScreens="/Home.screen" IndigoVersion="8" DefaultStylesheet="/Stylesheet.stylesheet">
+    <Project.Defaults>
+        <ProjectDefaults Viewport="412,690">
+            <ProjectDefaults.Device>
+                <DeviceInfo Id="GenericPhone" Orientation="Portrait" />
+            </ProjectDefaults.Device>
+        </ProjectDefaults>
+    </Project.Defaults>
+</Project>

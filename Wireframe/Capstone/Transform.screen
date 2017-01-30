@@ -1,0 +1,66 @@
+﻿<?Infragistics.Models format="xaml" version="29" appVersion="8.1.3000.87"?>
+<Page xmlns="http://prototypes.infragistics.com/"
+                                                                                   Id="0e5b229c-64ac-4512-ab9e-84293d25578e">
+    <Page.Content>
+        <Content Width="412" Height="690" Id="7ebb5b19-cfff-4053-8b13-b7ffc8002b0f">
+            <Content.Layers>
+                <Layer Id="5b4a5dd8-7cee-4c08-b1b9-d8d611265ac1" Panel.Layout="Stretch" />
+                <AnnotationsLayer Id="3431a65e-1f02-4755-916c-af4f756274d0" Panel.Layout="Stretch" />
+            </Content.Layers>
+            <Content.Viewbox>
+                <Viewbox Size="412,690" Id="c4837929-5fcb-40ca-befc-11aef9cee1f8" />
+            </Content.Viewbox>
+            <Content.GuidesInfo>
+                <GuidesInfo Id="b9bfe979-e78e-4c7a-8f20-80efe2884eac" />
+            </Content.GuidesInfo>
+        </Content>
+    </Page.Content>
+    <Page.Device>
+        <DeviceInfo Id="GenericPhone" Orientation="Portrait" />
+    </Page.Device>
+    <Page.Scenes>
+        <Scene Title="Start" Created="01/23/2017 16:42:52" Id="fb224d54-e6a0-4b11-9fe3-8d818947abaa">
+            <Scene.KeyFrames>
+                <KeyFrame Id="a8a62892-8078-4de0-9c47-baae647c5161">
+                    <KeyFrame.Operations>
+                        <Add Property="Panel.Children" Target="5b4a5dd8-7cee-4c08-b1b9-d8d611265ac1">
+                            <Add.Item>
+                                <TextArea Text="You will learn how to speak like me someday. " FontSize="28" Id="0cd5bc4b-0a84-4ffc-864c-7435f1018ce8" Panel.Bounds="0,0,357{5,2147483647},90{5,2147483647}" />
+                            </Add.Item>
+                        </Add>
+                        <Add Property="Panel.Children" Target="5b4a5dd8-7cee-4c08-b1b9-d8d611265ac1">
+                            <Add.Item>
+                                <Icon CatalogId="fa-microphone" Id="92881b2c-be58-45fa-8cd5-7f9de57c74df" Panel.Bounds="367,8,32{5,2147483647},32{5,2147483647}" />
+                            </Add.Item>
+                        </Add>
+                        <Add Property="Panel.Children" Target="5b4a5dd8-7cee-4c08-b1b9-d8d611265ac1">
+                            <Add.Item>
+                                <ContainerBox Id="382403ca-4bfb-4eb1-a408-a6fe7f12cabb" Panel.Bounds="7,106,392{5,2147483647},550{5,2147483647}">
+                                    <ContainerBox.Content>
+                                        <Container ClipToContainer="True" Id="d482c965-5764-48b1-9607-be893bddea94">
+                                            <Container.Children>
+                                                <Group GroupName="Group" Id="16550789-7014-40db-8bd9-bf30fc84dd73" Panel.Bounds="29,116,0*,0*">
+                                                    <Group.Children>
+                                                        <Title RichText="Learn how to speak like me someday, you will." Align="Center" Id="41519f9a-055f-4eb5-8734-6abb5d0eabb4" Panel.Bounds="0,0,332{5,2147483647},217{5,2147483647}" />
+                                                        <Icon CatalogId="Share" Id="76158c43-4fad-4dd6-8f99-a5f3616491a6" Panel.Bounds="21,241,32{5,2147483647},32{5,2147483647}" />
+                                                        <Icon CatalogId="Copy" Id="469c6367-ba22-476f-bc1e-0e3b4bef7917" Panel.Bounds="150,241,32{5,2147483647},32{5,2147483647}" />
+                                                        <Icon CatalogId="fa-star-o" Id="1ebedcd7-65eb-4c84-b383-76140c69d8d5" Panel.Bounds="293,241,32{5,2147483647},32{5,2147483647}" />
+                                                    </Group.Children>
+                                                </Group>
+                                            </Container.Children>
+                                        </Container>
+                                    </ContainerBox.Content>
+                                </ContainerBox>
+                            </Add.Item>
+                        </Add>
+                    </KeyFrame.Operations>
+                </KeyFrame>
+            </Scene.KeyFrames>
+        </Scene>
+        <Scene Title="Disconnected State" StateGroup="fb224d54-e6a0-4b11-9fe3-8d818947abaa" ParentScene="fb224d54-e6a0-4b11-9fe3-8d818947abaa" Created="01/23/2017 17:08:40" Id="07739586-df33-4d84-975a-1feac338db30">
+            <Scene.KeyFrames>
+                <KeyFrame Id="59cc7eb7-5d43-4cbd-8c41-b2ac47f98e67" />
+            </Scene.KeyFrames>
+        </Scene>
+    </Page.Scenes>
+</Page>

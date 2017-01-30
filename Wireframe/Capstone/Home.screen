@@ -1,0 +1,87 @@
+﻿<?Infragistics.Models format="xaml" version="29" appVersion="8.1.3000.87"?>
+<Page xmlns="http://prototypes.infragistics.com/"
+                                                                                   Id="0b0e09ce-1401-409c-921b-4bfb164f3c48">
+    <Page.Content>
+        <Content Width="412" Height="690" Id="dc926a97-638c-4d8d-bdce-03ad6129b2de">
+            <Content.Layers>
+                <Layer Id="b1f2efd0-988a-4d20-a4ab-14d09d34db14" Panel.Layout="Stretch" />
+                <AnnotationsLayer Id="512e807a-d29c-4898-8da6-1d31da26dc67" Panel.Layout="Stretch" />
+            </Content.Layers>
+            <Content.Viewbox>
+                <Viewbox Size="412,690" Id="e591a154-4835-4226-a043-d0d912fa9e8b" />
+            </Content.Viewbox>
+            <Content.GuidesInfo>
+                <GuidesInfo Id="5b948add-3d51-4c2a-9e31-41b756d71157" />
+            </Content.GuidesInfo>
+        </Content>
+    </Page.Content>
+    <Page.Device>
+        <DeviceInfo Id="GenericPhone" Orientation="Portrait" />
+    </Page.Device>
+    <Page.Scenes>
+        <Scene Title="Start" Created="01/23/2017 16:32:19" Id="0428219d-d9b3-46ea-80e9-db3412c5b812">
+            <Scene.KeyFrames>
+                <KeyFrame Id="2f975b7f-fd41-4e2c-ba69-d92dd14952e4">
+                    <KeyFrame.Operations>
+                        <Add Property="Panel.Children" Before="959df349-ef1c-422d-b043-c6e2c5590b2d" Target="b1f2efd0-988a-4d20-a4ab-14d09d34db14">
+                            <Add.Item>
+                                <Group GroupName="Group" Id="1136ff24-1e1d-49d0-a8d5-170ad5119e8e" Panel.Bounds="156,352,0*,0*">
+                                    <Group.Children>
+                                        <Ellipse Id="b88889cc-4a8b-4245-a609-4a005d4caa4b" Panel.Bounds="0,0,100{5,2147483647},100{5,2147483647}" />
+                                        <Icon CatalogId="fa-exchange" Id="9530ee5e-cd68-4984-8acf-4e6f3247548f" Panel.Bounds="34,34,32{5,2147483647},32{5,2147483647}" />
+                                    </Group.Children>
+                                    <Group.Click>
+                                        <CommandNavigate Screen="/Transform.screen" Created="01/23/2017 16:42:52" Id="608e0957-e448-451e-9c80-32c6f0dfead7">
+                                            <CommandNavigate.Transition>
+                                                <NavigateTransition Duration="0" />
+                                            </CommandNavigate.Transition>
+                                        </CommandNavigate>
+                                    </Group.Click>
+                                </Group>
+                            </Add.Item>
+                        </Add>
+                        <Add Property="Panel.Children" Before="4c464524-2aeb-45d7-adc4-56b9b77354ef" Target="b1f2efd0-988a-4d20-a4ab-14d09d34db14">
+                            <Add.Item>
+                                <Group GroupName="Group" Id="83acaa44-f79c-4442-a51e-b2f637730761" Panel.Bounds="74,472,0*,0*">
+                                    <Group.Children>
+                                        <Ellipse Id="959df349-ef1c-422d-b043-c6e2c5590b2d" Panel.Bounds="0,0,82{5,2147483647},82{5,2147483647}" />
+                                        <Icon CatalogId="fa-star" Id="7193d3fa-2d48-49c3-a659-625fb1bb6b80" Panel.Bounds="25,25,32{5,2147483647},32{5,2147483647}" />
+                                    </Group.Children>
+                                    <Group.Click>
+                                        <CommandNavigate Screen="/Starred.screen" Created="01/23/2017 17:10:08" Id="d348abf2-bc4f-4fe9-89dc-1d2ffac705a8">
+                                            <CommandNavigate.Transition>
+                                                <NavigateTransition Duration="0" />
+                                            </CommandNavigate.Transition>
+                                        </CommandNavigate>
+                                    </Group.Click>
+                                </Group>
+                            </Add.Item>
+                        </Add>
+                        <Add Property="Panel.Children" Target="b1f2efd0-988a-4d20-a4ab-14d09d34db14">
+                            <Add.Item>
+                                <Group GroupName="Group" Id="4c464524-2aeb-45d7-adc4-56b9b77354ef" Panel.Bounds="256,472,0*,0*">
+                                    <Group.Children>
+                                        <Ellipse Id="0d9ae968-ca28-4239-a929-96e002c89d36" Panel.Bounds="0,0,82{5,2147483647},82{5,2147483647}" />
+                                        <Icon CatalogId="fa-quote-right" Id="ced7a770-72ce-4a12-ae11-6a8198d7bc8e" Panel.Bounds="25,25,32{5,2147483647},32{5,2147483647}" />
+                                    </Group.Children>
+                                    <Group.Click>
+                                        <CommandNavigate Screen="/Quotes.screen" Created="01/23/2017 17:23:19" Id="39c22c95-2021-48a2-ba33-3057dfb3ab02">
+                                            <CommandNavigate.Transition>
+                                                <NavigateTransition Duration="0" />
+                                            </CommandNavigate.Transition>
+                                        </CommandNavigate>
+                                    </Group.Click>
+                                </Group>
+                            </Add.Item>
+                        </Add>
+                        <Add Property="Panel.Children" Target="b1f2efd0-988a-4d20-a4ab-14d09d34db14">
+                            <Add.Item>
+                                <Title RichText="&lt;Run FontSize=&quot;72&quot; &gt;avast&lt;/Run&gt;" Id="a95f5973-edf4-4d50-b787-3090e79021bc" Panel.Bounds="112,161,187{5,2147483647},100{5,2147483647}" />
+                            </Add.Item>
+                        </Add>
+                    </KeyFrame.Operations>
+                </KeyFrame>
+            </Scene.KeyFrames>
+        </Scene>
+    </Page.Scenes>
+</Page>
