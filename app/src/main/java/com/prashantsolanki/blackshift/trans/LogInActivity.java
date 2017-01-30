@@ -3,7 +3,6 @@ package com.prashantsolanki.blackshift.trans;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -205,13 +204,8 @@ public class LogInActivity extends AppCompatActivity implements
         if (user != null) {
 
             findViewById(R.id.google_login).setVisibility(View.GONE);
-            //startMainActivity();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startMainActivity();
-                }
-            },1000);
+
+            startMainActivity();
         } else {
             //UI when user hasn't logged in.
             findViewById(R.id.google_login).setVisibility(View.VISIBLE);
@@ -219,14 +213,15 @@ public class LogInActivity extends AppCompatActivity implements
     }
 
     void startMainActivity(){
-            Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
 /*// Pass data object in the bundle and populate details activity.
         intent.putExtra(MainActivity.EXTRA_CONTACT, contact);*/
-            ActivityOptionsCompat options = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(this,
-                            Pair.create(findViewById(R.id.logo),"logo"),
-                            Pair.create(findViewById(R.id.greetings),"greetings"));
-            startActivity(intent, options.toBundle());
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(this,
+                        Pair.create(findViewById(R.id.logo),"logo"),
+                        Pair.create(findViewById(R.id.greetings),"greetings"));
+        startActivity(intent, options.toBundle());
+        finish();
     }
 
     @Override

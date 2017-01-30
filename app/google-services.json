@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "177637145311-cc56rpmbh9vvq14er4m2din0mjlqtegh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.prashantsolanki.blackshift.trans",
+            "certificate_hash": "58259579212F3BCD678F1A286E6641CC7C9935D8"
+          }
+        },
+        {
           "client_id": "177637145311-m6ocbgv9oifs036k5v876sc5jkbsu6h6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
