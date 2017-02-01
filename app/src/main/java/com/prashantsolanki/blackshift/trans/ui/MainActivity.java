@@ -1,14 +1,17 @@
-package com.prashantsolanki.blackshift.trans;
+package com.prashantsolanki.blackshift.trans.ui;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
+import com.prashantsolanki.blackshift.trans.R;
 
 import butterknife.BindView;
 
@@ -18,6 +21,10 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
 
     @BindView(R.id.translate)
     FloatingActionButton translate;
+    @BindView(R.id.quotes)
+    FloatingActionButton quotes;
+    @BindView(R.id.starred)
+    FloatingActionButton starred;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +32,16 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
 
 
         // Check if we're running on Android 5.0 or higher
-        findViewById(R.id.translate).setOnClickListener(this);
-        findViewById(R.id.translate).setOnTouchListener(this);
+        translate.setOnClickListener(this);
+        translate.setOnTouchListener(this);
+        quotes.setOnClickListener(this);
+        quotes.setOnTouchListener(this);
+        starred.setOnClickListener(this);
+        starred.setOnTouchListener(this);
 
-        translate.setBackgroundColor(android.R.color.holo_blue_bright);
-        translate.setImageDrawable(new IconDrawable(this, MaterialIcons.md_swap_horiz).colorRes(android.R.color.black).sizeDp(96));
+        translate.setImageDrawable(new IconDrawable(this, MaterialIcons.md_swap_horiz).colorRes(android.R.color.black));
+        quotes.setImageDrawable(new IconDrawable(this,MaterialIcons.md_format_quote).colorRes(android.R.color.black));
+        starred.setImageDrawable(new IconDrawable(this,MaterialIcons.md_star).colorRes(android.R.color.black));
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Call some material design APIs here
@@ -77,12 +89,32 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
     }
 
     @Override
-    public void onClick(View v) {
+    public boolean isAuthNeeded() {
+        return true;
+    }
 
-        if(v.getId()==R.id.translate){
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if(id==R.id.translate){
             Intent intent =new Intent(getApplicationContext(),TranslationActivity.class);
-            intent.putExtra("x",animX);
-            intent.putExtra("y",animY);
+            intent.putExtra(ARG_ANIM_START_X,animX);
+            intent.putExtra(ARG_ANIM_START_Y,animY);
+            startActivity(intent);
+        }else if (id == R.id.quotes){
+            Intent intent =new Intent(getApplicationContext(),QuotesActivity.class);
+            intent.putExtra(ARG_ANIM_START_X,animX);
+            intent.putExtra(ARG_ANIM_START_Y,animY);
+
+            ActivityOptionsCompat options = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this,
+                            Pair.create((View) quotes,"quotes"));
+            startActivity(intent,options.toBundle());
+
+        }else if(id == R.id.starred){
+            Intent intent =new Intent(getApplicationContext(),TranslationActivity.class);
+            intent.putExtra(ARG_ANIM_START_X,animX);
+            intent.putExtra(ARG_ANIM_START_Y,animY);
             startActivity(intent);
         }
 

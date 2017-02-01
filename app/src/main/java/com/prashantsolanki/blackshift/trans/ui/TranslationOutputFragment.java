@@ -1,4 +1,4 @@
-package com.prashantsolanki.blackshift.trans;
+package com.prashantsolanki.blackshift.trans.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
+import com.prashantsolanki.blackshift.trans.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,6 +79,8 @@ public class TranslationOutputFragment extends Fragment {
     ImageView copy;
     @BindView(R.id.output_share)
     ImageView share;
+    @BindView(R.id.output_speech)
+    TextView speechTextView;
 
     @BindView(R.id.output_options)
     View outputOptions;
@@ -100,7 +103,9 @@ public class TranslationOutputFragment extends Fragment {
                 .colorRes(android.R.color.black)
                 .actionBarSize());
 
-        outputTextView.setText(speech+" - "+inputString);
+        speechTextView.setText(String.format("%s%s",speech.substring(0, 1).toUpperCase(),speech.substring(1)));
+
+        outputTextView.setText(inputString);
 
         if (outputTextView.getText().toString().trim().isEmpty()||outputTextView.getText().toString().trim().length()==0){
             outputOptions.setVisibility(View.GONE);
@@ -110,7 +115,7 @@ public class TranslationOutputFragment extends Fragment {
         return rootView;
     }
 
-    @OnClick(R.id.output_text)
+    @OnClick({R.id.output_text, R.id.output_copy})
     void copyOnClick(View v){
         String output = ((TextView)v).getText().toString().trim();
         if(!output.isEmpty()&&output.length()!=0){
@@ -130,43 +135,4 @@ public class TranslationOutputFragment extends Fragment {
         return outputTextView.getText().toString();
     }
 
-    /*
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    *//**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     *//*
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
 }

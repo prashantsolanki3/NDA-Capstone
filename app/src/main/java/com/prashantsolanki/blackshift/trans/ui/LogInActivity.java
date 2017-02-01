@@ -1,12 +1,10 @@
-package com.prashantsolanki.blackshift.trans;
+package com.prashantsolanki.blackshift.trans.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,11 +28,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
+import com.prashantsolanki.blackshift.trans.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LogInActivity extends AppCompatActivity implements
+public class LogInActivity extends BaseActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
@@ -55,17 +54,29 @@ public class LogInActivity extends AppCompatActivity implements
     ImageView logo;
 
     @Override
+    public boolean isAuthNeeded() {
+        return false;
+    }
+
+    @Override
+    public int getLayoutRes() {
+        return R.layout.activity_log_in;
+    }
+
+    @Override
+    public int getLayoutBaseViewIdRes() {
+        return R.id.activity_log_in;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
         ButterKnife.bind(this);
-
 
         // Button listeners
         findViewById(R.id.google_login).setOnClickListener(this);
 
         ((SignInButton) findViewById(R.id.google_login)).setSize(SignInButton.SIZE_WIDE);
-        logo.setBackgroundColor(android.R.color.holo_blue_bright);
         logo.setImageDrawable(new IconDrawable(this, MaterialIcons.md_swap_horiz).colorRes(android.R.color.black).sizeDp(96));
 
         // [START config_signin]
@@ -231,8 +242,7 @@ public class LogInActivity extends AppCompatActivity implements
         intent.putExtra(MainActivity.EXTRA_CONTACT, contact);*/
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this,
-                        Pair.create(findViewById(R.id.logo),"logo"),
-                        Pair.create(findViewById(R.id.greetings),"greetings"));
+                        Pair.create(findViewById(R.id.logo),"logo"));
         startActivity(intent, options.toBundle());
         finish();
     }
@@ -250,25 +260,6 @@ public class LogInActivity extends AppCompatActivity implements
         int i = v.getId();
         if (i == R.id.google_login) {
             signIn();
-        }
-    }
-
-
-    public ProgressDialog mProgressDialog;
-
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
         }
     }
 }

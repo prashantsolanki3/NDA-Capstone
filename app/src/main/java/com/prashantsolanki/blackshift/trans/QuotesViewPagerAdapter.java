@@ -6,38 +6,27 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import com.prashantsolanki.blackshift.trans.ui.TranslationOutputFragment;
+import com.prashantsolanki.blackshift.trans.ui.QuotesListFragment;
 
 /**
  * Created by prsso on 29-01-2017.
  */
 
-public class TranslationsViewPagerAdapter extends FragmentStatePagerAdapter {
+public class QuotesViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    public TranslationsViewPagerAdapter(FragmentManager fm) {
+    public QuotesViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    private String inputText;
-
-    public String getInputText() {
-        return inputText;
-    }
-
-    public void setInputText(String inputText) {
-        this.inputText = inputText;
-        notifyDataSetChanged();
-    }
-
-    @Override
+     @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return TranslationOutputFragment.newInstance("yoda",inputText);
+                return QuotesListFragment.newInstance("yoda");
             case 1:
-                return TranslationOutputFragment.newInstance("pirate",inputText);
+                return QuotesListFragment.newInstance("pirate");
             default:
-                return TranslationOutputFragment.newInstance("yoda",inputText);
+                return QuotesListFragment.newInstance("yoda");
         }
     }
 
@@ -47,11 +36,13 @@ public class TranslationsViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public int getItemPosition(Object object) {
-        // POSITION_NONE makes it possible to reload the PagerAdapter
-        return POSITION_NONE;
+    public CharSequence getPageTitle(int position) {
+        switch (position){
+            case 1: return "pirate";
+            case 0:
+            default: return "yoda";
+        }
     }
-
 
     /*Playing*/
 

@@ -1,4 +1,4 @@
-package com.prashantsolanki.blackshift.trans;
+package com.prashantsolanki.blackshift.trans.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,10 +16,12 @@ import android.view.ViewAnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.prashantsolanki.blackshift.trans.R;
+import com.prashantsolanki.blackshift.trans.TranslationsViewPagerAdapter;
 
-public class TranslationActivity extends AppCompatActivity {
+import butterknife.BindView;
+
+public class TranslationActivity extends BaseActivity {
 
     /*TODO: Create a startActivity static method.*/
 
@@ -35,13 +36,27 @@ public class TranslationActivity extends AppCompatActivity {
 
     TranslationsViewPagerAdapter viewPagerAdapter;
 
-    int x=-1,y = -1;
+
+
+    @Override
+    public boolean isAuthNeeded() {
+        return false;
+    }
+
+    @Override
+    public int getLayoutRes() {
+        return R.layout.activity_translation;
+    }
+
+    @Override
+    public int getLayoutBaseViewIdRes() {
+        return R.id.activity_translation;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_translation);
-        ButterKnife.bind(this);
+
         viewPagerAdapter = new TranslationsViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
 
@@ -49,12 +64,10 @@ public class TranslationActivity extends AppCompatActivity {
         if(getIntent().getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)!=null) {
             inputEditText.setText(getIntent()
                     .getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT));
+            inputEditText.setSelection(inputEditText.length());
             viewPagerAdapter.setInputText(inputEditText.getText().toString());
-            setResult();
+            //setResult();
         }
-
-        x = getIntent().getIntExtra("x",-1);
-        y = getIntent().getIntExtra("y",-1);
 
         /*
          * This listens to layout changes and report when bgReveal has been inflated.
@@ -65,7 +78,7 @@ public class TranslationActivity extends AppCompatActivity {
                 @Override
                 public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                     v.removeOnLayoutChangeListener(this);
-                    animateRevealShow(bgReveal,x,y);
+                    animateRevealShow(bgReveal, animStartX, animStartY);
                 }
             });
         }
@@ -74,8 +87,7 @@ public class TranslationActivity extends AppCompatActivity {
         final int color2 = ContextCompat.getColor(this, android.R.color.holo_green_light);
         final int color3 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
         final int[] colorList = new int[]{color1, color2, color3};
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 ArgbEvaluator evaluator = new ArgbEvaluator();
@@ -103,6 +115,14 @@ public class TranslationActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
 
             }
+        };
+
+        viewPager.addOnPageChangeListener(pageChangeListener);
+        viewPager.post(new Runnable() {
+            @Override
+            public void run() {
+                pageChangeListener.onPageSelected(0);
+            }
         });
 
         inputEditText.addTextChangedListener(new TextWatcher() {
@@ -125,48 +145,30 @@ public class TranslationActivity extends AppCompatActivity {
     }
 
     void setResult(){
-        Intent intent = new Intent();
-        intent.putExtra(Intent.EXTRA_PROCESS_TEXT, ((TranslationOutputFragment)viewPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem())).getOutputText());
-        setResult(RESULT_OK,intent);
-        Toast.makeText(getApplication(), ((TranslationOutputFragment)viewPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem())).getOutputText(),
-                Toast.LENGTH_SHORT).show();
+
+        String result = ((TranslationOutputFragment)viewPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem())).getOutputText().trim();
+        if(!result.isEmpty()&&result.length()!=0){
+            Intent intent = new Intent();
+            intent.putExtra(Intent.EXTRA_PROCESS_TEXT, result);
+            setResult(RESULT_OK,intent);
+            Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
     public void onBackPressed() {
-        exitReveal(bgReveal,x,y);
-    }
-
-    private void animateRevealShow(final View myView, int cx, int cy) {
-        // previously invisible view
-        // get the center for the clipping circle
-        if(cx == -1)
-        cx = myView.getMeasuredWidth() / 2;
-        if(cy == -1)
-        cy = myView.getMeasuredHeight() / 2;
-
-        // get the final radius for the clipping circle
-        int finalRadius =Math.max(myView.getWidth(), myView.getHeight());
-
-        // create the animator for this view (the start radius is zero)
-        Animator anim =
-                ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
-
-        anim.start();
-
-        // make the view visible and start the animation
-        myView.setVisibility(View.VISIBLE);
+        exitReveal(bgReveal, animStartX, animStartY);
     }
 
     void exitReveal(final View myView, int cx, int cy) {
         // previously visible view
-
         // get the center for the clipping circle
         if(cx ==-1 )
-        cx = myView.getMeasuredWidth() / 2;
+            cx = myView.getMeasuredWidth() / 2;
 
         if(cy ==-1)
-        cy = myView.getMeasuredHeight() / 2;
+            cy = myView.getMeasuredHeight() / 2;
 
         // get the initial radius for the clipping circle
         int initialRadius = myView.getWidth();
