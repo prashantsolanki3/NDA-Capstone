@@ -1,6 +1,7 @@
 package com.prashantsolanki.blackshift.trans.model;
 
 /**
+ *
  * Created by prsso on 30-01-2017.
  */
 
@@ -9,15 +10,13 @@ public class Quote {
     private String id;
     private String speech;
     private String quote;
-    private boolean starred;
 
     public Quote(){}
 
-    public Quote(String id, String speech, String quote, boolean starred) {
+    public Quote(String id, String speech, String quote) {
         this.id = id;
         this.speech = speech;
         this.quote = quote;
-        this.starred = starred;
     }
 
     public String getId() {
@@ -44,11 +43,4 @@ public class Quote {
         this.quote = quote;
     }
 
-    public boolean isStarred() {
-        return starred;
-    }
-
-    public void setStarred(boolean starred) {
-        this.starred = starred;
-    }
 }

@@ -23,7 +23,6 @@ import butterknife.BindView;
 
 public class QuotesActivity extends BaseActivity {
 
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -32,8 +31,6 @@ public class QuotesActivity extends BaseActivity {
 
     @BindView(R.id.activity_quotes)
     View bgReveal;
-
-
 
     @BindView(R.id.app_bar)
     AppBarLayout appBarLayout;
@@ -67,7 +64,10 @@ public class QuotesActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        quotesImage.setImageDrawable(new IconDrawable(this, MaterialIcons.md_format_quote).colorRes(android.R.color.black).sizeDp(64));
+        quotesImage.setImageDrawable(new IconDrawable(this, MaterialIcons.md_format_quote)
+                .colorRes(android.R.color.black)
+                .sizeDp(64));
+
         viewPagerAdapter = new QuotesViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -77,10 +77,12 @@ public class QuotesActivity extends BaseActivity {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                   /*
-         * This listens to layout changes and report when bgReveal has been inflated.
-         * */
+            /*
+            * This listens to layout changes and report when bgReveal has been inflated.
+            * */
+
             getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
+
                 @Override
                 public void onTransitionStart(Transition transition) {
 
@@ -114,8 +116,6 @@ public class QuotesActivity extends BaseActivity {
                 @Override
                 public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                     v.removeOnLayoutChangeListener(this);
-
-
                 }
             });
         }
@@ -155,4 +155,5 @@ public class QuotesActivity extends BaseActivity {
         // start the animation
         anim.start();
     }
+
 }

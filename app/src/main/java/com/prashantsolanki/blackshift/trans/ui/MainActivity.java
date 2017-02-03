@@ -1,6 +1,5 @@
 package com.prashantsolanki.blackshift.trans.ui;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -49,33 +48,27 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
             sharedElementEnterTransition.addListener(new Transition.TransitionListener() {
                 @Override
                 public void onTransitionStart(Transition transition) {
-
                 }
 
                 @Override
                 public void onTransitionEnd(Transition transition) {
-
                 }
 
                 @Override
                 public void onTransitionCancel(Transition transition) {
-
                 }
 
                 @Override
                 public void onTransitionPause(Transition transition) {
-
                 }
 
                 @Override
                 public void onTransitionResume(Transition transition) {
-
                 }
             });
         } else {
             // Implement this feature without material design
         }*/
-
     }
 
     @Override
@@ -105,20 +98,16 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
             Intent intent =new Intent(getApplicationContext(),QuotesActivity.class);
             intent.putExtra(ARG_ANIM_START_X,animX);
             intent.putExtra(ARG_ANIM_START_Y,animY);
-
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(this,
                             Pair.create((View) quotes,"quotes"));
             startActivity(intent,options.toBundle());
-
         }else if(id == R.id.starred){
             Intent intent =new Intent(getApplicationContext(),TranslationActivity.class);
             intent.putExtra(ARG_ANIM_START_X,animX);
             intent.putExtra(ARG_ANIM_START_Y,animY);
             startActivity(intent);
         }
-
-
     }
 
     @Override

@@ -26,9 +26,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.prashantsolanki.blackshift.trans.R;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -104,6 +107,16 @@ public class LogInActivity extends BaseActivity implements
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    HashMap<String,Object> userDetails =  new HashMap<>();
+                    userDetails.put("name",user.getDisplayName());
+                    userDetails.put("email",user.getEmail());
+                    userDetails.put("provider",user.getProviderId());
+                    if(user.getPhotoUrl()!=null)
+                        userDetails.put("profilePic",user.getPhotoUrl().toString());
+                    database.getReference().child("/users/"+user.getUid()+"/").updateChildren(userDetails);
+
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
