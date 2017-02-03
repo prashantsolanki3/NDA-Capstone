@@ -75,37 +75,40 @@ public class QuotesActivity extends BaseActivity {
         if(getSupportActionBar()!=null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-                /*
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                   /*
          * This listens to layout changes and report when bgReveal has been inflated.
          * */
-        getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
-            @Override
-            public void onTransitionStart(Transition transition) {
+            getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
+                @Override
+                public void onTransitionStart(Transition transition) {
 
-            }
+                }
 
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                animateRevealShow(appBarLayout,-1,-1);
-            }
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    animateRevealShow(appBarLayout,-1,-1);
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        getWindow().getSharedElementEnterTransition().removeListener(this);
+                }
 
-            @Override
-            public void onTransitionCancel(Transition transition) {
+                @Override
+                public void onTransitionCancel(Transition transition) {
 
-            }
+                }
 
-            @Override
-            public void onTransitionPause(Transition transition) {
+                @Override
+                public void onTransitionPause(Transition transition) {
 
-            }
+                }
 
-            @Override
-            public void onTransitionResume(Transition transition) {
+                @Override
+                public void onTransitionResume(Transition transition) {
 
-            }
-        });
+                }
+            });
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bgReveal.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
