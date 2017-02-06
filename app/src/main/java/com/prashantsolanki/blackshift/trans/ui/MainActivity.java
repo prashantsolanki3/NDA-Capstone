@@ -41,34 +41,6 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
         translate.setImageDrawable(new IconDrawable(this, MaterialIcons.md_swap_horiz).colorRes(android.R.color.black));
         quotes.setImageDrawable(new IconDrawable(this,MaterialIcons.md_format_quote).colorRes(android.R.color.black));
         starred.setImageDrawable(new IconDrawable(this,MaterialIcons.md_star).colorRes(android.R.color.black));
-
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // Call some material design APIs here
-            Transition sharedElementEnterTransition = getWindow().getSharedElementEnterTransition();
-            sharedElementEnterTransition.addListener(new Transition.TransitionListener() {
-                @Override
-                public void onTransitionStart(Transition transition) {
-                }
-
-                @Override
-                public void onTransitionEnd(Transition transition) {
-                }
-
-                @Override
-                public void onTransitionCancel(Transition transition) {
-                }
-
-                @Override
-                public void onTransitionPause(Transition transition) {
-                }
-
-                @Override
-                public void onTransitionResume(Transition transition) {
-                }
-            });
-        } else {
-            // Implement this feature without material design
-        }*/
     }
 
     @Override
@@ -103,10 +75,13 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
                             Pair.create((View) quotes,"quotes"));
             startActivity(intent,options.toBundle());
         }else if(id == R.id.starred){
-            Intent intent =new Intent(getApplicationContext(),TranslationActivity.class);
+            Intent intent =new Intent(getApplicationContext(),StarredActivity.class);
+            ActivityOptionsCompat options = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this,
+                            Pair.create((View) starred,"starred"));
             intent.putExtra(ARG_ANIM_START_X,animX);
             intent.putExtra(ARG_ANIM_START_Y,animY);
-            startActivity(intent);
+            startActivity(intent,options.toBundle());
         }
     }
 

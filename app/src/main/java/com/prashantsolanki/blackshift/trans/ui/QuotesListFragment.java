@@ -73,7 +73,7 @@ public class QuotesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_quotes_list, container, false);
+        rootView = inflater.inflate(R.layout.recycler_view, container, false);
         ButterKnife.bind(this,rootView);
         snapAdapter = new SnapAdapter<>(getContext(), Quote.class,R.layout.item_quote,QuoteVh.class,recyclerView);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));

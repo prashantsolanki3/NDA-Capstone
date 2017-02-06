@@ -112,7 +112,7 @@
                         </Add>
                         <Add Property="Panel.Children" Target="66f46ecb-656c-4373-9f11-22eb8ff1fafc">
                             <Add.Item>
-                                <Icon CatalogId="fa-quote-right" Id="59e11b02-f05f-4628-beb5-862df5474862" Panel.Bounds="174,43,64{5,2147483647},64{5,2147483647}" />
+                                <Icon CatalogId="fa-output-right" Id="59e11b02-f05f-4628-beb5-862df5474862" Panel.Bounds="174,43,64{5,2147483647},64{5,2147483647}" />
                             </Add.Item>
                         </Add>
                         <Add Property="Panel.Children" Target="66f46ecb-656c-4373-9f11-22eb8ff1fafc">

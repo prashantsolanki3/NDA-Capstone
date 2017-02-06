@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".App"
@@ -15,10 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- android:noHistory="true" -->
         <activity
             android:name=".ui.LogInActivity"
-            android:theme="@style/AppTheme.LoginActivity"></activity>
+            android:theme="@style/AppTheme.LoginActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +45,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.prashantsolanki.blackshift.trans.ui.MainActivity" />
         </activity>
+        <activity android:name=".ui.StarredActivity"></activity>
     </application>
 
 </manifest>

@@ -16,21 +16,33 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:id="@+id/input_options"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/input_text"
             android:background="@android:color/transparent"
             android:hint="Start Typing..."
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
+            android:layout_weight="100"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" >
             <requestFocus/>
         </EditText>
 
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/mic_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+        </LinearLayout>
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager_translations"
             android:background="#11000000"
-            android:layout_below="@id/input_text"
+            android:layout_below="@id/input_options"
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

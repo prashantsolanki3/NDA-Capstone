@@ -7,16 +7,17 @@ package com.prashantsolanki.blackshift.trans.model;
 
 public class Quote {
 
-    private String id;
-    private String speech;
-    private String quote;
+    protected String id;
+    protected String speech;
+    protected String output;
 
-    public Quote(){}
+    public Quote() {
+    }
 
-    public Quote(String id, String speech, String quote) {
+    public Quote(String id, String speech, String output) {
         this.id = id;
         this.speech = speech;
-        this.quote = quote;
+        this.output = output;
     }
 
     public String getId() {
@@ -35,12 +36,12 @@ public class Quote {
         this.speech = speech;
     }
 
-    public String getQuote() {
-        return quote;
+    public String getOutput() {
+        return output;
     }
 
-    public void setQuote(String quote) {
-        this.quote = quote;
+    public void setOutput(String output) {
+        this.output = output;
     }
 
 }

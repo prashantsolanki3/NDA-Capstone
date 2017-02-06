@@ -62,7 +62,7 @@
                                 <Group GroupName="Group" Id="4c464524-2aeb-45d7-adc4-56b9b77354ef" Panel.Bounds="256,472,0*,0*">
                                     <Group.Children>
                                         <Ellipse Id="0d9ae968-ca28-4239-a929-96e002c89d36" Panel.Bounds="0,0,82{5,2147483647},82{5,2147483647}" />
-                                        <Icon CatalogId="fa-quote-right" Id="ced7a770-72ce-4a12-ae11-6a8198d7bc8e" Panel.Bounds="25,25,32{5,2147483647},32{5,2147483647}" />
+                                        <Icon CatalogId="fa-output-right" Id="ced7a770-72ce-4a12-ae11-6a8198d7bc8e" Panel.Bounds="25,25,32{5,2147483647},32{5,2147483647}" />
                                     </Group.Children>
                                     <Group.Click>
                                         <CommandNavigate Screen="/Quotes.screen" Created="01/23/2017 17:23:19" Id="39c22c95-2021-48a2-ba33-3057dfb3ab02">

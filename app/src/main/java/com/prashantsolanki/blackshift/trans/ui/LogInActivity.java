@@ -110,11 +110,13 @@ public class LogInActivity extends BaseActivity implements
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     HashMap<String,Object> userDetails =  new HashMap<>();
+                    userDetails.put("id",user.getUid());
                     userDetails.put("name",user.getDisplayName());
                     userDetails.put("email",user.getEmail());
                     userDetails.put("provider",user.getProviderId());
                     if(user.getPhotoUrl()!=null)
                         userDetails.put("profilePic",user.getPhotoUrl().toString());
+
                     database.getReference().child("/users/"+user.getUid()+"/").updateChildren(userDetails);
 
                 } else {

@@ -4,9 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
@@ -14,12 +16,19 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.prashantsolanki.blackshift.trans.R;
 import com.prashantsolanki.blackshift.trans.TranslationsViewPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class TranslationActivity extends BaseActivity {
 
@@ -35,6 +44,10 @@ public class TranslationActivity extends BaseActivity {
     EditText inputEditText;
 
     TranslationsViewPagerAdapter viewPagerAdapter;
+
+    @BindView(R.id.mic_button)
+    ImageView micButton;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
 
 
 
@@ -59,6 +72,8 @@ public class TranslationActivity extends BaseActivity {
 
         viewPagerAdapter = new TranslationsViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
+        micButton.setImageDrawable(new IconDrawable(this, MaterialIcons.md_mic).actionBarSize().colorRes(android.R.color.black));
+
 
         //TODO: Check API
         if(getIntent().getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)!=null) {
@@ -189,6 +204,47 @@ public class TranslationActivity extends BaseActivity {
 
         // start the animation
         anim.start();
+    }
+
+    /**
+     * Showing google speech input dialog
+     * */
+    @OnClick(R.id.mic_button)
+    void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Receiving speech input
+     * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    inputEditText.setText(result.get(0));
+                }
+                break;
+            }
+
+        }
     }
 
 }

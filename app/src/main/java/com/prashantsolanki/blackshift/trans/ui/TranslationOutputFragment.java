@@ -1,6 +1,7 @@
 package com.prashantsolanki.blackshift.trans.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,9 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.prashantsolanki.blackshift.trans.R;
+import com.prashantsolanki.blackshift.trans.model.Quote;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,12 +93,14 @@ public class TranslationOutputFragment extends Fragment {
     @BindView(R.id.output_options)
     View outputOptions;
 
+    String key;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_translation_output, container, false);
         ButterKnife.bind(this,rootView);
-
+        key = FirebaseDatabase.getInstance().getReference().child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/").push().getKey();
         star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border)
                 .colorRes(android.R.color.black)
                 .actionBarSize());
@@ -133,6 +143,50 @@ public class TranslationOutputFragment extends Fragment {
 
     public String getOutputText(){
         return outputTextView.getText().toString();
+    }
+
+    @OnClick(R.id.output_share)
+    void share(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, outputTextView.getText().toString());
+        sendIntent.setType("text/plain");
+        getContext().startActivity(Intent.createChooser(sendIntent, getContext().getResources().getText(R.string.share_title)));
+    }
+
+    @OnClick(R.id.output_star)
+    void star(){
+        final Quote quote = new Quote(key,speech,getOutputText());
+        FirebaseDatabase.getInstance().getReference().child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(key)) {
+                    DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                    database.child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+quote.getId()+"/").removeValue(new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError==null)
+                                star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border).colorRes(android.R.color.black).actionBarSize());
+                        }
+                    });
+                } else {
+                    DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                    database.child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+quote.getId()+"/").setValue(new Quote(quote.getId(),quote.getSpeech(),quote.getOutput()), new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError==null)
+                                star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star).colorRes(android.R.color.black).actionBarSize());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 }

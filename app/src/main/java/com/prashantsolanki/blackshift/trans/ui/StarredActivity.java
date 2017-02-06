@@ -6,42 +6,47 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
-import com.prashantsolanki.blackshift.trans.QuotesViewPagerAdapter;
 import com.prashantsolanki.blackshift.trans.R;
+import com.prashantsolanki.blackshift.trans.model.Quote;
+import com.prashantsolanki.blackshift.trans.viewholder.QuoteVh;
 
 import butterknife.BindView;
+import io.github.prashantsolanki3.snaplibrary.snap.adapter.SnapAdapter;
 
-public class QuotesActivity extends BaseActivity {
+public class StarredActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.quotes_image)
-    ImageView quotesImage;
+    @BindView(R.id.starred_image)
+    ImageView starredImage;
 
-    @BindView(R.id.activity_quotes)
+    @BindView(R.id.activity_starred)
     View bgReveal;
 
     @BindView(R.id.app_bar)
     AppBarLayout appBarLayout;
 
-    @BindView(R.id.tabs)
-    TabLayout tabLayout;
 
-    @BindView(R.id.viewpager_quotes)
-    ViewPager viewPager;
+    SnapAdapter<Quote> snapAdapter;
 
-    QuotesViewPagerAdapter viewPagerAdapter;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
     @Override
     public boolean isAuthNeeded() {
@@ -50,30 +55,47 @@ public class QuotesActivity extends BaseActivity {
 
     @Override
     public int getLayoutRes() {
-        return R.layout.activity_quotes;
+        return R.layout.activity_starred;
     }
 
     @Override
     public int getLayoutBaseViewIdRes() {
-        return R.id.activity_quotes;
+        return R.id.activity_starred;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setSupportActionBar(toolbar);
-
-        quotesImage.setImageDrawable(new IconDrawable(this, MaterialIcons.md_format_quote)
+        starredImage.setImageDrawable(new IconDrawable(this, MaterialIcons.md_star)
                 .colorRes(android.R.color.black)
                 .sizeDp(64));
 
-        viewPagerAdapter = new QuotesViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-
         if(getSupportActionBar()!=null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        snapAdapter = new SnapAdapter<>(this, Quote.class,R.layout.item_quote,QuoteVh.class,recyclerView);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setAdapter(snapAdapter);
+
+        FirebaseDatabase.getInstance()
+                .getReference("/starred/"+ FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        snapAdapter.clear();
+
+                        for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                            snapAdapter.add(snapshot.getValue(Quote.class));
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
@@ -119,6 +141,7 @@ public class QuotesActivity extends BaseActivity {
                 }
             });
         }
+
     }
 
     @Override
@@ -130,10 +153,10 @@ public class QuotesActivity extends BaseActivity {
         // previously visible view
         // get the center for the clipping circle
         if(cx ==-1 )
-            cx = findViewById(R.id.toolbar_layout).getMeasuredWidth() / 2;
+            cx = myView.getMeasuredWidth() / 2;
 
         if(cy ==-1)
-            cy = findViewById(R.id.toolbar_layout).getMeasuredHeight() / 2;
+            cy = myView.getMeasuredHeight() / 2;
 
         // get the initial radius for the clipping circle
         int initialRadius = myView.getWidth();
@@ -147,7 +170,7 @@ public class QuotesActivity extends BaseActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                QuotesActivity.super.onBackPressed();
+                StarredActivity.super.onBackPressed();
                 myView.setVisibility(View.INVISIBLE);
             }
         });
@@ -155,5 +178,4 @@ public class QuotesActivity extends BaseActivity {
         // start the animation
         anim.start();
     }
-
 }

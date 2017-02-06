@@ -7,6 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.prashantsolanki.blackshift.trans.R;
@@ -25,44 +31,62 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
     final private ImageView share;
     final private TextView quoteTv;
     final private TextView speakerTv;
+    Quote quote;
 
     public QuoteVh(View itemView, Context context) {
         super(itemView, context);
         star = (ImageView) itemView.findViewById(R.id.star);
         copy = (ImageView) itemView.findViewById(R.id.copy);
         share = (ImageView) itemView.findViewById(R.id.share);
-        quoteTv = (TextView) itemView.findViewById(R.id.quote);
+        quoteTv = (TextView) itemView.findViewById(R.id.output);
         speakerTv = (TextView) itemView.findViewById(R.id.speaker);
 
         copy.setOnClickListener(this);
         star.setOnClickListener(this);
         share.setOnClickListener(this);
         quoteTv.setOnClickListener(this);
-
-        star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border)
-                .colorRes(android.R.color.black)
-                .actionBarSize());
-
-        copy.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_content_copy)
-                .colorRes(android.R.color.black)
-                .actionBarSize());
-
-        share.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_share)
-                .colorRes(android.R.color.black)
-                .actionBarSize());
     }
 
 
     @Override
     public void onClick(View v) {
-        String quote = quoteTv.getText().toString();
+        String quoteString = quoteTv.getText().toString();
         int id = v.getId();
-        if(id == R.id.quote || id == R.id.copy)
-            copyOnClick(quote);
+        if(id == R.id.output || id == R.id.copy)
+            copyOnClick(quoteString);
         else if(id == R.id.star){
 
+            FirebaseDatabase.getInstance().getReference().child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.hasChild(quote.getId())) {
+                        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                        database.child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+quote.getId()+"/").removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                if(databaseError==null)
+                                    star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border).colorRes(android.R.color.black).actionBarSize());
+                            }
+                        });
+                    } else {
+                        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                        database.child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+quote.getId()+"/").setValue(quote, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                if(databaseError==null)
+                                    star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star).colorRes(android.R.color.black).actionBarSize());
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }else if(id == R.id.share){
-            share(quote);
+            share(quoteString);
         }
     }
 
@@ -91,7 +115,39 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
 
     @Override
     public void populateViewHolder(Quote quote, int i) {
-        quoteTv.setText(quote.getQuote());
-        //speakerTv.setText(String.format(" - %s",quote.getSpeaker()));
+        this.quote = quote;
+        quoteTv.setText(quote.getOutput());
+
+        toggleStar(star,quote.getId());
+
+        copy.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_content_copy)
+                .colorRes(android.R.color.black)
+                .actionBarSize());
+
+        share.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_share)
+                .colorRes(android.R.color.black)
+                .actionBarSize());
+    }
+
+    void toggleStar(final ImageView star,final String id){
+
+        FirebaseDatabase.getInstance().getReference().child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(id))
+                    star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star)
+                            .colorRes(android.R.color.black)
+                            .actionBarSize());
+                else
+                    star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border)
+                            .colorRes(android.R.color.black)
+                            .actionBarSize());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

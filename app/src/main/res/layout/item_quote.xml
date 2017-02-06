@@ -17,7 +17,7 @@
     tools:context="com.prashantsolanki.blackshift.trans.ui.TranslationOutputFragment">
 
     <TextView
-        android:id="@+id/quote"
+        android:id="@+id/output"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:paddingTop="16dp"
         android:paddingEnd="16dp"
