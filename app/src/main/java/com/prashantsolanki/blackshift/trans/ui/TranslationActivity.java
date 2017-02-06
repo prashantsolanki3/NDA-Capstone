@@ -27,7 +27,7 @@ import android.widget.Toast;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.prashantsolanki.blackshift.trans.R;
-import com.prashantsolanki.blackshift.trans.TranslationsViewPagerAdapter;
+import com.prashantsolanki.blackshift.trans.adapters.TranslationsViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -80,13 +80,11 @@ public class TranslationActivity extends BaseActivity {
         micButton.setImageDrawable(new IconDrawable(this, MaterialIcons.md_mic).actionBarSize().colorRes(android.R.color.black));
 
 
-        //TODO: Check API
         if(getIntent().getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)!=null) {
             inputEditText.setText(getIntent()
                     .getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT));
             inputEditText.setSelection(inputEditText.length());
             viewPagerAdapter.setInputText(inputEditText.getText().toString());
-            //setResult();
         }
 
         /*
@@ -165,14 +163,20 @@ public class TranslationActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                viewPagerAdapter.setInputText(s.toString());
+                if(s.toString().length()>0){
+                    micButton.setImageDrawable(new IconDrawable(getApplicationContext(),MaterialIcons.md_send)
+                            .actionBarSize()
+                            .colorRes(android.R.color.black));
+                }else{
+                    viewPagerAdapter.setInputText("");
+                    micButton.setImageDrawable(new IconDrawable(getApplicationContext(), MaterialIcons.md_mic).actionBarSize().colorRes(android.R.color.black));
+                }
             }
         });
 
     }
 
     void setResult(){
-
         String result = ((TranslationOutputFragment)viewPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem())).getOutputText().trim();
         if(!result.isEmpty()&&result.length()!=0){
             Intent intent = new Intent();
@@ -222,7 +226,8 @@ public class TranslationActivity extends BaseActivity {
      * Showing google speech input dialog
      * */
     @OnClick(R.id.mic_button)
-    void promptSpeechInput() {
+    void micButton() {
+        if(inputEditText.getText().length()==0){
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -235,6 +240,9 @@ public class TranslationActivity extends BaseActivity {
             Toast.makeText(getApplicationContext(),
                     getString(R.string.speech_not_supported),
                     Toast.LENGTH_SHORT).show();
+        }
+        }else{
+            viewPagerAdapter.setInputText(inputEditText.getText().toString());
         }
     }
 

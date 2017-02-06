@@ -52,11 +52,13 @@
         <ImageView
             android:id="@+id/star"
             android:layout_weight="1"
+            android:contentDescription="@string/cd_star"
             android:padding="16dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:contentDescription="@string/cd_copy"
             android:id="@+id/copy"
             android:layout_weight="1"
             android:padding="16dp"
@@ -64,6 +66,7 @@
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:contentDescription="@string/cd_share"
             android:id="@+id/share"
             android:layout_weight="1"
             android:padding="16dp"

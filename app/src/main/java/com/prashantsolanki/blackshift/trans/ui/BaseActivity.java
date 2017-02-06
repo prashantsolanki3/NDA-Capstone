@@ -107,7 +107,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 } else {
                     // User is signed out
                     Toast.makeText(getApplicationContext(),
-                            "You are not logged in. Please log in.",
+                            getResources().getString(R.string.user_not_logged_in),
                             Toast.LENGTH_SHORT).show();
                     findViewById(getLayoutBaseViewIdRes()).setVisibility(View.INVISIBLE);
                     startActivityForResult(new Intent(getApplicationContext(), LogInActivity.class), 439);

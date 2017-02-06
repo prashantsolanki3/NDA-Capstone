@@ -16,9 +16,13 @@
         android:theme="@style/AppTheme">
 
         <activity
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:name=".ui.LogInActivity"
             android:theme="@style/AppTheme.LoginActivity" />
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,6 +30,8 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:name=".ui.TranslationActivity"
 
             android:windowSoftInputMode="adjustResize">
@@ -38,6 +44,8 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:name=".ui.QuotesActivity"
             android:label="@string/title_activity_quotes"
             android:parentActivityName=".ui.MainActivity"
@@ -49,6 +57,8 @@
 
         <activity android:name=".ui.StarredActivity"
             android:label="@string/title_activity_starred"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.StarredActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

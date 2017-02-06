@@ -6,6 +6,11 @@
     <string name="firebase_auth_failed">Authentication failed. Please try again later</string>
     <string name="loading">Loading. Please wait&#8230;</string>
     <string name="share_title">Share Quote</string>
+    <string name="user_not_logged_in">You are not logged in. Please log in.</string>
+    <string name="api_limit">Rate limit of 5 requests per hour exceeded.</string>
+    <string name="welcome">Welcome to Trans</string>
+    <string name="input_text_hint">Start Typing&#8230;</string>
+
 
     <string name="speech_prompt">Say something&#8230;</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
@@ -16,7 +21,14 @@
     <string name="title_activity_quotes">Quotes</string>
     <string name="title_activity_starred">Quotes</string>
 
+
     <string name="action_settings">Settings</string>
 
+    <string name="cd_logo">Logo of the Application</string>
+    <string name="cd_mic_and_send_button">This is the speech to text and send button.</string>
+    <string name="cd_star">Star Button</string>
+    <string name="cd_copy">Copy Button</string>
+    <string name="cd_share">Share Button</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
 </resources>

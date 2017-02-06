@@ -1,4 +1,4 @@
-package com.prashantsolanki.blackshift.trans;
+package com.prashantsolanki.blackshift.trans.adapters;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;

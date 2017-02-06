@@ -15,8 +15,8 @@ import android.widget.ImageView;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
-import com.prashantsolanki.blackshift.trans.QuotesViewPagerAdapter;
 import com.prashantsolanki.blackshift.trans.R;
+import com.prashantsolanki.blackshift.trans.adapters.QuotesViewPagerAdapter;
 
 import butterknife.BindView;
 

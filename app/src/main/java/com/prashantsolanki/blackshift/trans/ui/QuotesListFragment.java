@@ -14,7 +14,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.prashantsolanki.blackshift.trans.R;
-import com.prashantsolanki.blackshift.trans.SlideInOutBottomItemAnimator;
 import com.prashantsolanki.blackshift.trans.model.Quote;
 import com.prashantsolanki.blackshift.trans.viewholder.QuoteVh;
 
@@ -79,8 +78,6 @@ public class QuotesListFragment extends Fragment {
         snapAdapter = new SnapAdapter<>(getContext(), Quote.class,R.layout.item_quote,QuoteVh.class,recyclerView);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(snapAdapter);
-        recyclerView.setItemAnimator(new SlideInOutBottomItemAnimator(recyclerView));
-
 
         FirebaseDatabase.getInstance()
                 .getReference("/quotes/")

@@ -80,7 +80,7 @@ public class LogInActivity extends BaseActivity implements
         findViewById(R.id.google_login).setOnClickListener(this);
 
         ((SignInButton) findViewById(R.id.google_login)).setSize(SignInButton.SIZE_WIDE);
-        logo.setImageDrawable(new IconDrawable(this, MaterialIcons.md_swap_horiz).colorRes(android.R.color.black).sizeDp(96));
+        logo.setImageDrawable(new IconDrawable(this, MaterialIcons.md_swap_horiz).colorRes(android.R.color.black).sizeDp(128));
 
         // [START config_signin]
         // Configure Google Sign In

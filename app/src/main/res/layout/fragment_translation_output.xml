@@ -53,5 +53,9 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_gravity="center"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
 </FrameLayout>

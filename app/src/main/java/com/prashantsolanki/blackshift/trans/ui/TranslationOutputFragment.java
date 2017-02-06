@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,11 +22,16 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.prashantsolanki.blackshift.trans.R;
 import com.prashantsolanki.blackshift.trans.model.Quote;
+import com.prashantsolanki.blackshift.trans.model.Result;
+import com.prashantsolanki.blackshift.trans.network.TranslationsApi;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.grantland.widget.AutofitTextView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -36,13 +42,14 @@ import me.grantland.widget.AutofitTextView;
  * create an instance of this fragment.
  */
 public class TranslationOutputFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_INPUT = "input";
     private static final String ARG_SPEECH = "speech";
 
     private String inputString;
     private String speech;
+
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     //private OnFragmentInteractionListener mListener;
 
@@ -100,7 +107,10 @@ public class TranslationOutputFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_translation_output, container, false);
         ButterKnife.bind(this,rootView);
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.GONE);
         key = FirebaseDatabase.getInstance().getReference().child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/").push().getKey();
+
         star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border)
                 .colorRes(android.R.color.black)
                 .actionBarSize());
@@ -115,8 +125,28 @@ public class TranslationOutputFragment extends Fragment {
 
         speechTextView.setText(String.format("%s%s",speech.substring(0, 1).toUpperCase(),speech.substring(1)));
 
-        outputTextView.setText(inputString);
+        if(inputString!=null&&inputString.trim().length()>2) {
+            TranslationsApi.retrofit.create(TranslationsApi.class).translate(speech, inputString).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response != null &&
+                            response.isSuccessful() &&
+                            response.body().error == null) {
+                        outputTextView.setText(response.body().contents.translated);
+                        progressBar.setVisibility(View.GONE);
+                    } else if (response != null &&
+                            response.errorBody() != null) {
+                        Toast.makeText(getContext(), getResources().getString(R.string.api_limit), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            progressBar.setVisibility(View.VISIBLE);
+        }
         if (outputTextView.getText().toString().trim().isEmpty()||outputTextView.getText().toString().trim().length()==0){
             outputOptions.setVisibility(View.GONE);
         }else{

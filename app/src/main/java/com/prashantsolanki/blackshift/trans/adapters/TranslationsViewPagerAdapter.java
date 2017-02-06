@@ -1,4 +1,4 @@
-package com.prashantsolanki.blackshift.trans;
+package com.prashantsolanki.blackshift.trans.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
