@@ -27,6 +27,7 @@
         </activity>
         <activity
             android:name=".ui.TranslationActivity"
+
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
@@ -45,7 +46,31 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.prashantsolanki.blackshift.trans.ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.StarredActivity"></activity>
+
+        <activity android:name=".ui.StarredActivity"
+            android:label="@string/title_activity_starred"
+            android:theme="@style/AppTheme.StarredActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.prashantsolanki.blackshift.trans.ui.MainActivity" />
+        </activity>
+
+    <!--Widget-->
+        <receiver
+            android:label="@string/app_name"
+            android:name=".widget.WidgetProvider">
+
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
+        </receiver>
+
+
+        <service android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

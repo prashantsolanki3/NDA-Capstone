@@ -12,6 +12,10 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.prashantsolanki.blackshift.trans.R;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements View.OnTouchListener, View.OnClickListener {
@@ -24,19 +28,24 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
     FloatingActionButton quotes;
     @BindView(R.id.starred)
     FloatingActionButton starred;
-
+    @BindView(R.id.greetings)
+    Typewriter greeting;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        // Check if we're running on Android 5.0 or higher
         translate.setOnClickListener(this);
         translate.setOnTouchListener(this);
         quotes.setOnClickListener(this);
         quotes.setOnTouchListener(this);
         starred.setOnClickListener(this);
         starred.setOnTouchListener(this);
+        List<String> greetingStrings = new ArrayList<>();
+        greetingStrings.add("Ahoy!");
+        greetingStrings.add("Hi, Yeessss!");
+        greetingStrings.add("Shiver me timbers!");
+
+        greeting.animateText(greetingStrings.get(new Random().nextInt(greetingStrings.size())));
 
         translate.setImageDrawable(new IconDrawable(this, MaterialIcons.md_swap_horiz).colorRes(android.R.color.black));
         quotes.setImageDrawable(new IconDrawable(this,MaterialIcons.md_format_quote).colorRes(android.R.color.black));

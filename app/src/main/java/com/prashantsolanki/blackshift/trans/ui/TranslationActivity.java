@@ -5,7 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -15,6 +17,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -98,16 +103,24 @@ public class TranslationActivity extends BaseActivity {
             });
         }
 
-        final int color1 = ContextCompat.getColor(this, android.R.color.holo_blue_bright);
-        final int color2 = ContextCompat.getColor(this, android.R.color.holo_green_light);
-        final int color3 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
-        final int[] colorList = new int[]{color1, color2, color3};
+        final int color1 = ContextCompat.getColor(this, android.R.color.holo_green_light);
+        final int color2 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
+        final int[] colorList = new int[]{color1, color2,color1};
+
+        final Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
         final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 ArgbEvaluator evaluator = new ArgbEvaluator();
                 int colorUpdate = (Integer) evaluator.evaluate(positionOffset, colorList[position], colorList[position == 2 ? position : position + 1]);
                 bgReveal.setBackgroundColor(colorUpdate);
+                float[] hsv = new float[3];
+                Color.colorToHSV(colorUpdate, hsv);
+                hsv[2] *= 0.8f;
+                window.setStatusBarColor(Color.HSVToColor(hsv));
             }
 
             @Override
@@ -119,9 +132,8 @@ public class TranslationActivity extends BaseActivity {
                     case 1:
                         bgReveal.setBackgroundColor(color2);
                         break;
-                    case 2:
-                        bgReveal.setBackgroundColor(color3);
-                        break;
+                    default:
+                        bgReveal.setBackgroundColor(color1);
                 }
                 setResult();
             }
@@ -166,7 +178,7 @@ public class TranslationActivity extends BaseActivity {
             Intent intent = new Intent();
             intent.putExtra(Intent.EXTRA_PROCESS_TEXT, result);
             setResult(RESULT_OK,intent);
-            Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -247,4 +259,14 @@ public class TranslationActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        super.onPause();
+    }
 }

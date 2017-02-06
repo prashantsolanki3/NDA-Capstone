@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="171dp"
         app:fabSize="normal"
-        app:backgroundTint="@android:color/holo_blue_bright"
+        app:backgroundTint="@android:color/holo_green_light"
         android:id="@+id/translate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -33,10 +33,9 @@
         android:layout_toLeftOf="@+id/translate"
         android:layout_toStartOf="@+id/translate" />
 
-    <TextView
+    <com.prashantsolanki.blackshift.trans.ui.Typewriter
         android:transitionName="greetings"
         android:id="@+id/greetings"
-        android:text="Hey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="64sp"

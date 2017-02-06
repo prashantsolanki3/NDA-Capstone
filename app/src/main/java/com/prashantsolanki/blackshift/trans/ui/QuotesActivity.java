@@ -9,7 +9,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
@@ -69,7 +68,7 @@ public class QuotesActivity extends BaseActivity {
                 .sizeDp(64));
 
         viewPagerAdapter = new QuotesViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(viewPagerAdapter);
+
         tabLayout.setupWithViewPager(viewPager);
 
         if(getSupportActionBar()!=null)
@@ -81,7 +80,7 @@ public class QuotesActivity extends BaseActivity {
             * This listens to layout changes and report when bgReveal has been inflated.
             * */
 
-            getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
+/*            getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
 
                 @Override
                 public void onTransitionStart(Transition transition) {
@@ -93,6 +92,7 @@ public class QuotesActivity extends BaseActivity {
                     animateRevealShow(appBarLayout,-1,-1);
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                         getWindow().getSharedElementEnterTransition().removeListener(this);
+
                 }
 
                 @Override
@@ -109,13 +109,15 @@ public class QuotesActivity extends BaseActivity {
                 public void onTransitionResume(Transition transition) {
 
                 }
-            });
+            });*/
 
             bgReveal.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                     v.removeOnLayoutChangeListener(this);
+                    viewPager.setAdapter(viewPagerAdapter);
+                    animateRevealShow(bgReveal,animStartX,animStartY);
                 }
             });
         }
@@ -123,7 +125,7 @@ public class QuotesActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        exitReveal(appBarLayout, -1, -1);
+        exitReveal(bgReveal,animStartX,animStartY);
     }
 
     void exitReveal(final View myView, int cx, int cy) {

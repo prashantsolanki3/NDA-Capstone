@@ -3,6 +3,7 @@ package com.prashantsolanki.blackshift.trans.viewholder;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +47,11 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
         share.setOnClickListener(this);
         quoteTv.setOnClickListener(this);
     }
-
+    @Override
+    public void animateViewHolder(SnapViewHolder viewHolder, int position) {
+        //Apply Animations to ViewHolder.
+        viewHolder.itemView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_in));
+    }
 
     @Override
     public void onClick(View v) {
@@ -149,5 +154,10 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
 
             }
         });
+    }
+
+    public void clearAnimation()
+    {
+        itemView.clearAnimation();
     }
 }

@@ -24,9 +24,8 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <android.support.design.widget.FloatingActionButton
-                android:transitionName="starred"
                 android:layout_width="wrap_content"
-                app:backgroundTint="@color/colorPrimary"
+                app:backgroundTint="@android:color/holo_blue_bright"
                 android:id="@+id/starred_image"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"/>

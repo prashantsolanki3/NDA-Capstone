@@ -111,6 +111,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     findViewById(getLayoutBaseViewIdRes()).setVisibility(View.INVISIBLE);
                     startActivityForResult(new Intent(getApplicationContext(), LogInActivity.class), 439);
+                    BaseActivity.this.finish();
                 }
             }
         };

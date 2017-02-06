@@ -9,7 +9,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
@@ -76,32 +75,13 @@ public class StarredActivity extends BaseActivity {
 
         snapAdapter = new SnapAdapter<>(this, Quote.class,R.layout.item_quote,QuoteVh.class,recyclerView);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setAdapter(snapAdapter);
 
-        FirebaseDatabase.getInstance()
-                .getReference("/starred/"+ FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        snapAdapter.clear();
-
-                        for(DataSnapshot snapshot:dataSnapshot.getChildren())
-                            snapAdapter.add(snapshot.getValue(Quote.class));
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            /*
+/*            *//*
             * This listens to layout changes and report when bgReveal has been inflated.
-            * */
+            * *//*
 
             getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
 
@@ -112,9 +92,11 @@ public class StarredActivity extends BaseActivity {
 
                 @Override
                 public void onTransitionEnd(Transition transition) {
-                    animateRevealShow(appBarLayout,-1,-1);
+                    //animateRevealShow(appBarLayout,-1,-1);
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                         getWindow().getSharedElementEnterTransition().removeListener(this);
+
+
                 }
 
                 @Override
@@ -131,13 +113,34 @@ public class StarredActivity extends BaseActivity {
                 public void onTransitionResume(Transition transition) {
 
                 }
-            });
+            });*/
 
             bgReveal.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                     v.removeOnLayoutChangeListener(this);
+                    animateRevealShow(bgReveal, animStartX, animStartY);
+                    FirebaseDatabase.getInstance()
+                            .getReference("/starred/"+ FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    snapAdapter.clear();
+
+                                    for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                                        snapAdapter.add(snapshot.getValue(Quote.class));
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                    recyclerView.setAdapter(snapAdapter);
                 }
             });
         }
@@ -146,7 +149,7 @@ public class StarredActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        exitReveal(appBarLayout, -1, -1);
+        exitReveal(bgReveal,animStartX,animStartY);
     }
 
     void exitReveal(final View myView, int cx, int cy) {
