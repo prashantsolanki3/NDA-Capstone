@@ -29,7 +29,10 @@ import io.github.prashantsolanki3.snaplibrary.snap.adapter.SnapAdapter;
 public class QuotesListFragment extends Fragment {
 
     private static final String ARG_SPEECH = "speech";
-
+    SnapAdapter<Quote> snapAdapter;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    View rootView;
     private String speech;
 
     public QuotesListFragment() {
@@ -51,14 +54,6 @@ public class QuotesListFragment extends Fragment {
         return fragment;
     }
 
-
-    SnapAdapter<Quote> snapAdapter;
-
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-
-    View rootView;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +69,9 @@ public class QuotesListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.recycler_view, container, false);
-        ButterKnife.bind(this,rootView);
-        snapAdapter = new SnapAdapter<>(getContext(), Quote.class,R.layout.item_quote,QuoteVh.class,recyclerView);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
+        ButterKnife.bind(this, rootView);
+        snapAdapter = new SnapAdapter<>(getContext(), Quote.class, R.layout.item_quote, QuoteVh.class, recyclerView);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(snapAdapter);
 
         FirebaseDatabase.getInstance()
@@ -85,21 +80,21 @@ public class QuotesListFragment extends Fragment {
                 .startAt(speech)
                 .endAt(speech)
                 .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                snapAdapter.clear();
+                        snapAdapter.clear();
 
-                for(DataSnapshot snapshot:dataSnapshot.getChildren())
-                    snapAdapter.add(snapshot.getValue(Quote.class));
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                            snapAdapter.add(snapshot.getValue(Quote.class));
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
 
         return rootView;
     }

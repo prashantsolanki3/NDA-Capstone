@@ -61,7 +61,7 @@ public class AnimatedSnapAdapter<T> extends SnapAdapter<T> {
 
     @Override
     public void onViewDetachedFromWindow(SnapViewHolder holder) {
-        ((QuoteVh)holder).clearAnimation();
+        ((QuoteVh) holder).clearAnimation();
     }
 
 

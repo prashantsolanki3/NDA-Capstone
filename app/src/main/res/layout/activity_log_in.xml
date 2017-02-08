@@ -12,32 +12,32 @@
     tools:context="com.prashantsolanki.blackshift.trans.ui.LogInActivity">
 
     <ImageView
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/btn_star_big_on"
-        android:id="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:contentDescription="@string/cd_logo"
         android:transitionName="profile"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true" />
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 
     <TextView
-        android:transitionName="greetings"
         android:id="@+id/greetings"
-        android:text="@string/welcome"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:layout_marginBottom="96dp"
-        android:layout_above="@id/logo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_above="@id/logo"
+        android:layout_marginBottom="96dp"
+        android:gravity="center"
+        android:text="@string/welcome"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:transitionName="greetings" />
 
     <com.google.android.gms.common.SignInButton
-        android:layout_centerHorizontal="true"
         android:id="@+id/google_login"
-        android:layout_marginTop="64dp"
-        android:layout_below="@id/logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp" />
 
 </RelativeLayout>

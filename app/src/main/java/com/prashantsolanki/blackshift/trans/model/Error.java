@@ -6,9 +6,9 @@ package com.prashantsolanki.blackshift.trans.model;
 
 public class Error {
 
-    public Error() {
-    }
-
     public int code;
     public String message;
+
+    public Error() {
+    }
 }

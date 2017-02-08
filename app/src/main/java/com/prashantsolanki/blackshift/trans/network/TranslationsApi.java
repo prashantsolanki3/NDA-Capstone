@@ -15,11 +15,11 @@ import retrofit2.http.Query;
 
 public interface TranslationsApi {
 
-    @GET("{speech}.json")
-    Call<Result> translate(@Path("speech") String speech, @Query("text") String input);
-
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://api.funtranslations.com/translate/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
+    @GET("{speech}.json")
+    Call<Result> translate(@Path("speech") String speech, @Query("text") String input);
 }

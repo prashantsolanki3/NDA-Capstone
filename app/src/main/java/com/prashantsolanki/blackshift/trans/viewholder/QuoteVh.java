@@ -25,7 +25,7 @@ import io.github.prashantsolanki3.snaplibrary.snap.layout.viewholder.SnapViewHol
  * Created by prsso on 30-01-2017.
  */
 
-public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListener{
+public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListener {
 
     final private ImageView star;
     final private ImageView copy;
@@ -47,6 +47,7 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
         share.setOnClickListener(this);
         quoteTv.setOnClickListener(this);
     }
+
     @Override
     public void animateViewHolder(SnapViewHolder viewHolder, int position) {
         //Apply Animations to ViewHolder.
@@ -57,28 +58,28 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
     public void onClick(View v) {
         String quoteString = quoteTv.getText().toString();
         int id = v.getId();
-        if(id == R.id.output || id == R.id.copy)
+        if (id == R.id.output || id == R.id.copy)
             copyOnClick(quoteString);
-        else if(id == R.id.star){
+        else if (id == R.id.star) {
 
-            FirebaseDatabase.getInstance().getReference().child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("/starred/" + FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.hasChild(quote.getId())) {
+                    if (dataSnapshot.hasChild(quote.getId())) {
                         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                        database.child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+quote.getId()+"/").removeValue(new DatabaseReference.CompletionListener() {
+                        database.child("/starred/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + quote.getId() + "/").removeValue(new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                if(databaseError==null)
+                                if (databaseError == null)
                                     star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border).colorRes(android.R.color.black).actionBarSize());
                             }
                         });
                     } else {
                         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                        database.child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+quote.getId()+"/").setValue(quote, new DatabaseReference.CompletionListener() {
+                        database.child("/starred/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + quote.getId() + "/").setValue(quote, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                if(databaseError==null)
+                                if (databaseError == null)
                                     star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star).colorRes(android.R.color.black).actionBarSize());
                             }
                         });
@@ -90,12 +91,12 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
 
                 }
             });
-        }else if(id == R.id.share){
+        } else if (id == R.id.share) {
             share(quoteString);
         }
     }
 
-    void share(String quote){
+    void share(String quote) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, quote);
@@ -103,18 +104,18 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
         getContext().startActivity(Intent.createChooser(sendIntent, getContext().getResources().getText(R.string.share_title)));
     }
 
-    void copyOnClick(String output){
+    void copyOnClick(String output) {
 
-        if(!output.isEmpty()&&output.length()!=0){
-            if(android.os.Build.VERSION.SDK_INT < 11) {
+        if (!output.isEmpty() && output.length() != 0) {
+            if (android.os.Build.VERSION.SDK_INT < 11) {
                 android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setText(output);
             } else {
                 android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", output);
+                android.content.ClipData clip = android.content.ClipData.newPlainText(getContext().getString(R.string.copied_text), output);
                 clipboard.setPrimaryClip(clip);
             }
-            Toast.makeText(getContext(),"Copied to clipboard.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -123,7 +124,7 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
         this.quote = quote;
         quoteTv.setText(quote.getOutput());
 
-        toggleStar(star,quote.getId());
+        toggleStar(star, quote.getId());
 
         copy.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_content_copy)
                 .colorRes(android.R.color.black)
@@ -134,12 +135,12 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
                 .actionBarSize());
     }
 
-    void toggleStar(final ImageView star,final String id){
+    void toggleStar(final ImageView star, final String id) {
 
-        FirebaseDatabase.getInstance().getReference().child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("/starred/" + FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(id))
+                if (dataSnapshot.hasChild(id))
                     star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star)
                             .colorRes(android.R.color.black)
                             .actionBarSize());
@@ -156,8 +157,7 @@ public class QuoteVh extends SnapViewHolder<Quote> implements View.OnClickListen
         });
     }
 
-    public void clearAnimation()
-    {
+    public void clearAnimation() {
         itemView.clearAnimation();
     }
 }

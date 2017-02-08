@@ -39,22 +39,16 @@ public class TranslationActivity extends BaseActivity {
 
     /*TODO: Create a startActivity static method.*/
 
+    private final int REQ_CODE_SPEECH_INPUT = 100;
     @BindView(R.id.activity_translation)
     View bgReveal;
-
     @BindView(R.id.viewpager_translations)
     ViewPager viewPager;
-
     @BindView(R.id.input_text)
     EditText inputEditText;
-
     TranslationsViewPagerAdapter viewPagerAdapter;
-
     @BindView(R.id.mic_button)
     ImageView micButton;
-    private final int REQ_CODE_SPEECH_INPUT = 100;
-
-
 
     @Override
     public boolean isAuthNeeded() {
@@ -80,7 +74,7 @@ public class TranslationActivity extends BaseActivity {
         micButton.setImageDrawable(new IconDrawable(this, MaterialIcons.md_mic).actionBarSize().colorRes(android.R.color.black));
 
 
-        if(getIntent().getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)!=null) {
+        if (getIntent().getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT) != null) {
             inputEditText.setText(getIntent()
                     .getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT));
             inputEditText.setSelection(inputEditText.length());
@@ -90,7 +84,7 @@ public class TranslationActivity extends BaseActivity {
         /*
          * This listens to layout changes and report when bgReveal has been inflated.
          * */
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bgReveal.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
@@ -103,7 +97,7 @@ public class TranslationActivity extends BaseActivity {
 
         final int color1 = ContextCompat.getColor(this, android.R.color.holo_green_light);
         final int color2 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
-        final int[] colorList = new int[]{color1, color2,color1};
+        final int[] colorList = new int[]{color1, color2, color1};
 
         final Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -163,11 +157,11 @@ public class TranslationActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().length()>0){
-                    micButton.setImageDrawable(new IconDrawable(getApplicationContext(),MaterialIcons.md_send)
+                if (s.toString().length() > 0) {
+                    micButton.setImageDrawable(new IconDrawable(getApplicationContext(), MaterialIcons.md_send)
                             .actionBarSize()
                             .colorRes(android.R.color.black));
-                }else{
+                } else {
                     viewPagerAdapter.setInputText("");
                     micButton.setImageDrawable(new IconDrawable(getApplicationContext(), MaterialIcons.md_mic).actionBarSize().colorRes(android.R.color.black));
                 }
@@ -176,12 +170,12 @@ public class TranslationActivity extends BaseActivity {
 
     }
 
-    void setResult(){
-        String result = ((TranslationOutputFragment)viewPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem())).getOutputText().trim();
-        if(!result.isEmpty()&&result.length()!=0){
+    void setResult() {
+        String result = ((TranslationOutputFragment) viewPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem())).getOutputText().trim();
+        if (!result.isEmpty() && result.length() != 0) {
             Intent intent = new Intent();
             intent.putExtra(Intent.EXTRA_PROCESS_TEXT, result);
-            setResult(RESULT_OK,intent);
+            setResult(RESULT_OK, intent);
 //            Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
         }
 
@@ -195,10 +189,10 @@ public class TranslationActivity extends BaseActivity {
     void exitReveal(final View myView, int cx, int cy) {
         // previously visible view
         // get the center for the clipping circle
-        if(cx ==-1 )
+        if (cx == -1)
             cx = myView.getMeasuredWidth() / 2;
 
-        if(cy ==-1)
+        if (cy == -1)
             cy = myView.getMeasuredHeight() / 2;
 
         // get the initial radius for the clipping circle
@@ -224,31 +218,31 @@ public class TranslationActivity extends BaseActivity {
 
     /**
      * Showing google speech input dialog
-     * */
+     */
     @OnClick(R.id.mic_button)
     void micButton() {
-        if(inputEditText.getText().length()==0){
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                getString(R.string.speech_prompt));
-        try {
-            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
-        } catch (ActivityNotFoundException a) {
-            Toast.makeText(getApplicationContext(),
-                    getString(R.string.speech_not_supported),
-                    Toast.LENGTH_SHORT).show();
-        }
-        }else{
+        if (inputEditText.getText().length() == 0) {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                    getString(R.string.speech_prompt));
+            try {
+                startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+            } catch (ActivityNotFoundException a) {
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.speech_not_supported),
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else {
             viewPagerAdapter.setInputText(inputEditText.getText().toString());
         }
     }
 
     /**
      * Receiving speech input
-     * */
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -271,7 +265,7 @@ public class TranslationActivity extends BaseActivity {
     protected void onPause() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 

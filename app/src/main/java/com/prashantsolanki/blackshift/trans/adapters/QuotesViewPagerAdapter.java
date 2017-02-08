@@ -8,25 +8,36 @@ import android.view.ViewGroup;
 
 import com.prashantsolanki.blackshift.trans.ui.QuotesListFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by prsso on 29-01-2017.
  */
 
 public class QuotesViewPagerAdapter extends FragmentStatePagerAdapter {
 
+    private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+
+    List<String> speeches;
+
     public QuotesViewPagerAdapter(FragmentManager fm) {
         super(fm);
+        speeches = new ArrayList<>();
+
+        speeches.add("yoda");
+        speeches.add("pirate");
     }
 
-     @Override
+    @Override
     public Fragment getItem(int position) {
-        switch (position){
+        switch (position) {
             case 0:
-                return QuotesListFragment.newInstance("yoda");
+                return QuotesListFragment.newInstance(speeches.get(position));
             case 1:
-                return QuotesListFragment.newInstance("pirate");
+                return QuotesListFragment.newInstance(speeches.get(position));
             default:
-                return QuotesListFragment.newInstance("yoda");
+                return QuotesListFragment.newInstance(speeches.get(0));
         }
     }
 
@@ -35,18 +46,18 @@ public class QuotesViewPagerAdapter extends FragmentStatePagerAdapter {
         return 2;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        switch (position){
-            case 1: return "pirate";
-            case 0:
-            default: return "yoda";
-        }
-    }
-
     /*Playing*/
 
-    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 1:
+                return speeches.get(position);
+            case 0:
+            default:
+                return speeches.get(0);
+        }
+    }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {

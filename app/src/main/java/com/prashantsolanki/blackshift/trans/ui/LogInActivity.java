@@ -42,19 +42,15 @@ public class LogInActivity extends BaseActivity implements
 
     private static final String TAG = "LogInActivity";
     private static final int RC_SIGN_IN = 9001;
-
-    // [START declare_auth]
-    private FirebaseAuth mAuth;
-    // [END declare_auth]
-
-    // [START declare_auth_listener]
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    // [END declare_auth_listener]
-
-    private GoogleApiClient mGoogleApiClient;
-
     @BindView(R.id.logo)
     ImageView logo;
+    // [END declare_auth]
+    // [START declare_auth]
+    private FirebaseAuth mAuth;
+    // [END declare_auth_listener]
+    // [START declare_auth_listener]
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     public boolean isAuthNeeded() {
@@ -106,22 +102,22 @@ public class LogInActivity extends BaseActivity implements
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Log.d(TAG, getString(R.string.log_auth_state_login) + user.getUid());
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    HashMap<String,Object> userDetails =  new HashMap<>();
-                    userDetails.put("id",user.getUid());
-                    userDetails.put("name",user.getDisplayName());
-                    userDetails.put("email",user.getEmail());
-                    userDetails.put("provider",user.getProviderId());
-                    if(user.getPhotoUrl()!=null)
-                        userDetails.put("profilePic",user.getPhotoUrl().toString());
+                    HashMap<String, Object> userDetails = new HashMap<>();
+                    userDetails.put("id", user.getUid());
+                    userDetails.put("name", user.getDisplayName());
+                    userDetails.put("email", user.getEmail());
+                    userDetails.put("provider", user.getProviderId());
+                    if (user.getPhotoUrl() != null)
+                        userDetails.put("profilePic", user.getPhotoUrl().toString());
 
-                    database.getReference().child("/users/"+user.getUid()+"/").updateChildren(userDetails);
+                    database.getReference().child("/users/" + user.getUid() + "/").updateChildren(userDetails);
 
                 } else {
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    Log.d(TAG, getString(R.string.log_auth_state_logout));
                 }
                 // [START_EXCLUDE]
                 updateUI(user);
@@ -184,14 +180,12 @@ public class LogInActivity extends BaseActivity implements
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(LogInActivity.this, "Authentication failed.",
+                            Toast.makeText(LogInActivity.this, getString(R.string.firebase_auth_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
                         // [START_EXCLUDE]
@@ -251,13 +245,13 @@ public class LogInActivity extends BaseActivity implements
         }
     }
 
-    void startMainActivity(){
+    void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
 /*// Pass data object in the bundle and populate details activity.
         intent.putExtra(MainActivity.EXTRA_CONTACT, contact);*/
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this,
-                        Pair.create(findViewById(R.id.logo),"logo"));
+                        Pair.create(findViewById(R.id.logo), "logo"));
         startActivity(intent, options.toBundle());
         finish();
     }
@@ -266,7 +260,6 @@ public class LogInActivity extends BaseActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
         Toast.makeText(this, getString(R.string.login_error), Toast.LENGTH_SHORT).show();
     }
 

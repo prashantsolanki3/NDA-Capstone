@@ -14,11 +14,14 @@ import com.prashantsolanki.blackshift.trans.ui.TranslationOutputFragment;
 
 public class TranslationsViewPagerAdapter extends FragmentStatePagerAdapter {
 
+    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+    private String inputText;
+    private static final String SPEECH_YODA = "yoda";
+    private static final String SPEECH_PIRATE = "pirate";
+
     public TranslationsViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
-
-    private String inputText;
 
     public String getInputText() {
         return inputText;
@@ -31,13 +34,13 @@ public class TranslationsViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch (position){
+        switch (position) {
             case 0:
-                return TranslationOutputFragment.newInstance("yoda",inputText);
+                return TranslationOutputFragment.newInstance(SPEECH_YODA, inputText);
             case 1:
-                return TranslationOutputFragment.newInstance("pirate",inputText);
+                return TranslationOutputFragment.newInstance(SPEECH_PIRATE, inputText);
             default:
-                return TranslationOutputFragment.newInstance("yoda",inputText);
+                return TranslationOutputFragment.newInstance(SPEECH_YODA, inputText);
         }
     }
 
@@ -46,16 +49,14 @@ public class TranslationsViewPagerAdapter extends FragmentStatePagerAdapter {
         return 2;
     }
 
+
+    /*Playing*/
+
     @Override
     public int getItemPosition(Object object) {
         // POSITION_NONE makes it possible to reload the PagerAdapter
         return POSITION_NONE;
     }
-
-
-    /*Playing*/
-
-    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {

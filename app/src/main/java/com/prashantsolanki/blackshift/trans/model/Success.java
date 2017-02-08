@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class Success {
 
-    public Success() {
-    }
-
     @SerializedName("total")
     @Expose
     public Integer total;
+
+    public Success() {
+    }
 
 }

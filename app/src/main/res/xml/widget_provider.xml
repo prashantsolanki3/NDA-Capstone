@@ -1,8 +1,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-  android:minWidth="250dp"
-  android:minHeight="180dp"
-  android:updatePeriodMillis="0"
-  android:initialLayout="@layout/widget"
-  android:autoAdvanceViewId="@+id/listView"
-  android:resizeMode="vertical|horizontal"
-/>
+    android:autoAdvanceViewId="@+id/listView"
+    android:initialLayout="@layout/widget"
+    android:minHeight="180dp"
+    android:minWidth="250dp"
+    android:resizeMode="vertical|horizontal"
+    android:updatePeriodMillis="0" />

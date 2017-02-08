@@ -38,21 +38,21 @@ public class App extends Application {
         FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()!=null){
-                    FirebaseDatabase.getInstance().getReference("/starred/"+firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                if (firebaseAuth.getCurrentUser() != null) {
+                    FirebaseDatabase.getInstance().getReference("/starred/" + firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             starred.clear();
-                            for(DataSnapshot d: dataSnapshot.getChildren())
+                            for (DataSnapshot d : dataSnapshot.getChildren())
                                 starred.add(d.getValue(Quote.class));
 
-                            Intent intent = new Intent(getApplicationContext(),WidgetProvider.class);
+                            Intent intent = new Intent(getApplicationContext(), WidgetProvider.class);
                             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
                             // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
                             // since it seems the onUpdate() is only fired on that:
                             int[] ids = AppWidgetManager.getInstance(getApplicationContext())
                                     .getAppWidgetIds(new ComponentName(getApplicationContext(), WidgetProvider.class));
-                            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
                             sendBroadcast(intent);
                         }
 

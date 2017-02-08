@@ -1,7 +1,6 @@
 package com.prashantsolanki.blackshift.trans.model;
 
 /**
- *
  * Created by prsso on 30-01-2017.
  */
 

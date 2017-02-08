@@ -71,10 +71,10 @@ public class QuotesActivity extends BaseActivity {
 
         tabLayout.setupWithViewPager(viewPager);
 
-        if(getSupportActionBar()!=null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             /*
             * This listens to layout changes and report when bgReveal has been inflated.
@@ -117,7 +117,7 @@ public class QuotesActivity extends BaseActivity {
                 public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                     v.removeOnLayoutChangeListener(this);
                     viewPager.setAdapter(viewPagerAdapter);
-                    animateRevealShow(bgReveal,animStartX,animStartY);
+                    animateRevealShow(bgReveal, animStartX, animStartY);
                 }
             });
         }
@@ -125,16 +125,16 @@ public class QuotesActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        exitReveal(bgReveal,animStartX,animStartY);
+        exitReveal(bgReveal, animStartX, animStartY);
     }
 
     void exitReveal(final View myView, int cx, int cy) {
         // previously visible view
         // get the center for the clipping circle
-        if(cx ==-1 )
+        if (cx == -1)
             cx = findViewById(R.id.toolbar_layout).getMeasuredWidth() / 2;
 
-        if(cy ==-1)
+        if (cy == -1)
             cy = findViewById(R.id.toolbar_layout).getMeasuredHeight() / 2;
 
         // get the initial radius for the clipping circle

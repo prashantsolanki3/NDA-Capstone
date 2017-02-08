@@ -70,7 +70,7 @@ public class StarredActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setSupportActionBar(toolbar);
 
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+        MobileAds.initialize(getApplicationContext(), getString(R.string.banner_ad_unit_id));
 
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -80,14 +80,14 @@ public class StarredActivity extends BaseActivity {
                 .colorRes(android.R.color.black)
                 .sizeDp(64));
 
-        if(getSupportActionBar()!=null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        snapAdapter = new SnapAdapter<>(this, Quote.class,R.layout.item_quote,QuoteVh.class,recyclerView);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
+        snapAdapter = new SnapAdapter<>(this, Quote.class, R.layout.item_quote, QuoteVh.class, recyclerView);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
 /*            *//*
             * This listens to layout changes and report when bgReveal has been inflated.
@@ -132,14 +132,14 @@ public class StarredActivity extends BaseActivity {
                     v.removeOnLayoutChangeListener(this);
                     animateRevealShow(bgReveal, animStartX, animStartY);
                     FirebaseDatabase.getInstance()
-                            .getReference("/starred/"+ FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .getReference("/starred/" + FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                                     snapAdapter.clear();
 
-                                    for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
                                         snapAdapter.add(snapshot.getValue(Quote.class));
 
                                 }
@@ -159,16 +159,16 @@ public class StarredActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        exitReveal(bgReveal,animStartX,animStartY);
+        exitReveal(bgReveal, animStartX, animStartY);
     }
 
     void exitReveal(final View myView, int cx, int cy) {
         // previously visible view
         // get the center for the clipping circle
-        if(cx ==-1 )
+        if (cx == -1)
             cx = myView.getMeasuredWidth() / 2;
 
-        if(cy ==-1)
+        if (cy == -1)
             cy = myView.getMeasuredHeight() / 2;
 
         // get the initial radius for the clipping circle

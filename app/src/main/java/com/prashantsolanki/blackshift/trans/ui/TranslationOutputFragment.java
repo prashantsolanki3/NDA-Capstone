@@ -44,14 +44,26 @@ import retrofit2.Response;
 public class TranslationOutputFragment extends Fragment {
     private static final String ARG_INPUT = "input";
     private static final String ARG_SPEECH = "speech";
-
-    private String inputString;
-    private String speech;
-
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    View rootView;
+    @BindView(R.id.output_text)
+    AutofitTextView outputTextView;
 
     //private OnFragmentInteractionListener mListener;
+    @BindView(R.id.output_star)
+    ImageView star;
+    @BindView(R.id.output_copy)
+    ImageView copy;
+    @BindView(R.id.output_share)
+    ImageView share;
+    @BindView(R.id.output_speech)
+    TextView speechTextView;
+    @BindView(R.id.output_options)
+    View outputOptions;
+    String key;
+    private String inputString;
+    private String speech;
 
     public TranslationOutputFragment() {
         // Required empty public constructor
@@ -83,33 +95,14 @@ public class TranslationOutputFragment extends Fragment {
         }
     }
 
-    View rootView;
-
-    @BindView(R.id.output_text)
-    AutofitTextView outputTextView;
-
-    @BindView(R.id.output_star)
-    ImageView star;
-    @BindView(R.id.output_copy)
-    ImageView copy;
-    @BindView(R.id.output_share)
-    ImageView share;
-    @BindView(R.id.output_speech)
-    TextView speechTextView;
-
-    @BindView(R.id.output_options)
-    View outputOptions;
-
-    String key;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_translation_output, container, false);
-        ButterKnife.bind(this,rootView);
+        ButterKnife.bind(this, rootView);
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.GONE);
-        key = FirebaseDatabase.getInstance().getReference().child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/").push().getKey();
+        key = FirebaseDatabase.getInstance().getReference().child("/starred/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/").push().getKey();
 
         star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border)
                 .colorRes(android.R.color.black)
@@ -123,9 +116,9 @@ public class TranslationOutputFragment extends Fragment {
                 .colorRes(android.R.color.black)
                 .actionBarSize());
 
-        speechTextView.setText(String.format("%s%s",speech.substring(0, 1).toUpperCase(),speech.substring(1)));
+        speechTextView.setText(String.format("%s%s", speech.substring(0, 1).toUpperCase(), speech.substring(1)));
 
-        if(inputString!=null&&inputString.trim().length()>2) {
+        if (inputString != null && inputString.trim().length() > 2) {
             TranslationsApi.retrofit.create(TranslationsApi.class).translate(speech, inputString).enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {
@@ -147,36 +140,36 @@ public class TranslationOutputFragment extends Fragment {
             });
             progressBar.setVisibility(View.VISIBLE);
         }
-        if (outputTextView.getText().toString().trim().isEmpty()||outputTextView.getText().toString().trim().length()==0){
+        if (outputTextView.getText().toString().trim().isEmpty() || outputTextView.getText().toString().trim().length() == 0) {
             outputOptions.setVisibility(View.GONE);
-        }else{
+        } else {
             outputOptions.setVisibility(View.VISIBLE);
         }
         return rootView;
     }
 
     @OnClick({R.id.output_text, R.id.output_copy})
-    void copyOnClick(View v){
-        String output = ((TextView)v).getText().toString().trim();
-        if(!output.isEmpty()&&output.length()!=0){
-            if(android.os.Build.VERSION.SDK_INT < 11) {
+    void copyOnClick(View v) {
+        String output = ((TextView) v).getText().toString().trim();
+        if (!output.isEmpty() && output.length() != 0) {
+            if (android.os.Build.VERSION.SDK_INT < 11) {
                 android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setText(output);
             } else {
                 android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", output);
+                android.content.ClipData clip = android.content.ClipData.newPlainText(getString(R.string.copied_text), output);
                 clipboard.setPrimaryClip(clip);
             }
-            Toast.makeText(getContext(),"Copied to clipboard.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public String getOutputText(){
+    public String getOutputText() {
         return outputTextView.getText().toString();
     }
 
     @OnClick(R.id.output_share)
-    void share(){
+    void share() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, outputTextView.getText().toString());
@@ -185,26 +178,26 @@ public class TranslationOutputFragment extends Fragment {
     }
 
     @OnClick(R.id.output_star)
-    void star(){
-        final Quote quote = new Quote(key,speech,getOutputText());
-        FirebaseDatabase.getInstance().getReference().child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+    void star() {
+        final Quote quote = new Quote(key, speech, getOutputText());
+        FirebaseDatabase.getInstance().getReference().child("/starred/" + FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(key)) {
+                if (dataSnapshot.hasChild(key)) {
                     DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                    database.child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+quote.getId()+"/").removeValue(new DatabaseReference.CompletionListener() {
+                    database.child("/starred/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + quote.getId() + "/").removeValue(new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                            if(databaseError==null)
+                            if (databaseError == null)
                                 star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star_border).colorRes(android.R.color.black).actionBarSize());
                         }
                     });
                 } else {
                     DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                    database.child("/starred/"+FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+quote.getId()+"/").setValue(new Quote(quote.getId(),quote.getSpeech(),quote.getOutput()), new DatabaseReference.CompletionListener() {
+                    database.child("/starred/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + quote.getId() + "/").setValue(new Quote(quote.getId(), quote.getSpeech(), quote.getOutput()), new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                            if(databaseError==null)
+                            if (databaseError == null)
                                 star.setImageDrawable(new IconDrawable(getContext(), MaterialIcons.md_star).colorRes(android.R.color.black).actionBarSize());
                         }
                     });

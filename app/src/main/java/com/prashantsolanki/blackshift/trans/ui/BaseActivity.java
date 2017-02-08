@@ -27,69 +27,66 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    public String ARG_ANIM_START_X = "animStartX", ARG_ANIM_START_Y = "animStartY";
+    public ProgressDialog mProgressDialog;
+    int animStartX = -1, animStartY = -1;
     private FirebaseAnalytics mFirebaseAnalytics;
-
-    public String ARG_ANIM_START_X = "animStartX",ARG_ANIM_START_Y = "animStartY";
+    // [START declare_auth]
+    private FirebaseAuth mAuth;
+    // [START declare_auth_listener]
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(isAuthNeeded())
+        if (isAuthNeeded())
             verifyAuth();
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
-        animStartX = getIntent().getIntExtra(ARG_ANIM_START_X,-1);
-        animStartY = getIntent().getIntExtra(ARG_ANIM_START_Y,-1);
+        animStartX = getIntent().getIntExtra(ARG_ANIM_START_X, -1);
+        animStartY = getIntent().getIntExtra(ARG_ANIM_START_Y, -1);
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
-
-
     public FirebaseAnalytics getFirebaseAnalytics() {
         return mFirebaseAnalytics;
     }
+    /*User login check*/
 
-    public void logEvent(String s, Bundle bundle){
+    public void logEvent(String s, Bundle bundle) {
         mFirebaseAnalytics.logEvent(s, bundle);
     }
-
+    // [END declare_auth]
 
     public abstract boolean isAuthNeeded();
+    // [END declare_auth_listener]
 
     @LayoutRes
     public abstract int getLayoutRes();
+    // [END on_start_add_listener]
+
     @IdRes
     public abstract int getLayoutBaseViewIdRes();
-    /*User login check*/
-
-    // [START declare_auth]
-    private FirebaseAuth mAuth;
-    // [END declare_auth]
-
-    // [START declare_auth_listener]
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    // [END declare_auth_listener]
 
     // [START on_start_add_listener]
     @Override
     public void onStart() {
         super.onStart();
-        if(isAuthNeeded())
-        mAuth.addAuthStateListener(mAuthListener);
+        if (isAuthNeeded())
+            mAuth.addAuthStateListener(mAuthListener);
     }
-    // [END on_start_add_listener]
+// [END on_stop_remove_listener]
 
     // [START on_stop_remove_listener]
     @Override
     public void onStop() {
         super.onStop();
-        if(isAuthNeeded())
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
+        if (isAuthNeeded())
+            if (mAuthListener != null) {
+                mAuth.removeAuthStateListener(mAuthListener);
+            }
     }
-
 
     void verifyAuth() {
         // [START initialize_auth]
@@ -117,9 +114,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         };
         // [END auth_state_listener]
     }
-// [END on_stop_remove_listener]
-
-    public ProgressDialog mProgressDialog;
 
     public void showProgressDialog() {
         if (mProgressDialog == null) {
@@ -130,27 +124,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         mProgressDialog.show();
     }
 
+
+    /*Common Animation Stuff*/
+
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
     }
 
-
-    /*Common Animation Stuff*/
-
-    int animStartX =-1, animStartY = -1;
-
     void animateRevealShow(final View myView, int cx, int cy) {
         // previously invisible view
         // get the center for the clipping circle
-        if(cx == -1)
+        if (cx == -1)
             cx = myView.getMeasuredWidth() / 2;
-        if(cy == -1)
+        if (cy == -1)
             cy = myView.getMeasuredHeight() / 2;
 
         // get the final radius for the clipping circle
-        int finalRadius =Math.max(myView.getWidth(), myView.getHeight());
+        int finalRadius = Math.max(myView.getWidth(), myView.getHeight());
 
         // create the animator for this view (the start radius is zero)
         Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
